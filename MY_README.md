@@ -1,3 +1,6 @@
+---
+sitemap: false
+---
 # handy
 
 1. github desktop -> sourcetree로 대체
