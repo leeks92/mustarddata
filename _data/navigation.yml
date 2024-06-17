@@ -1,13 +1,15 @@
 # main links
 # main:
 sidebar-category:
+- title: "Search"
+  url: /search/
 - title: "💻 Programming"
   children:
     - title: "Basic"
       url: categories/basic/
       category: "basic"
-    # - title: "AWS"
-    #   url: categories/aws/
+    - title: "AWS"
+      url: categories/aws/
     #   category: "aws"
 - title: "ETC"
   url: categories/etc/
