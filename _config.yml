@@ -12,17 +12,18 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+# 테마 스킨 선택
+minimal_mistakes_skin    : "contrast" # "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
-locale                   : "ko-KR"
-title                    : "다니엘 노트"
+locale                   : "ko-KR" # 사이트 메인 언어 설정
+title                    : "다니엘 노트" # 사이트 제목
 title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Daniel"
-description              : "다니엘이 운영하는 개발자 노트입니다."
-url                      : "https://mustarddata.com"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+name                     : "Daniel" # 글 작성자
+description              : "다니엘이 운영하는 개발 블로그" # 사이트 설명
+url                      : "https://mustarddata.com" # 도메인
+baseurl                  : # the subpath of your site, e.g. "/blog" 
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
@@ -230,7 +231,7 @@ timezone: Asia/Seoul # https://en.wikipedia.org/wiki/List_of_tz_database_time_zo
 
 
 # Pagination with jekyll-paginate
-paginate: 5 # amount of posts to show
+paginate: 10 # 기본값 5 amount of posts to show 
 paginate_path: /page:num/
 
 # Pagination with jekyll-paginate-v2
@@ -285,20 +286,20 @@ whitelist:
 category_archive:
   type: liquid
   path: /categories/
-tag_archive:
-  type: liquid
-  path: /tags/
+# tag_archive:
+#   type: liquid
+#   path: /tags/
 # https://github.com/jekyll/jekyll-archives
 jekyll-archives:
   enabled:
     - categories
-    - tags
+    # - tags
   layouts:
     category: archive-taxonomy
-    tag: archive-taxonomy
+    # tag: archive-taxonomy
   permalinks:
     category: /categories/:name/
-    tag: /tags/:name/
+    # tag: /tags/:name/
 
 
 # HTML Compression

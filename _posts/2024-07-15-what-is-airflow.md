@@ -1,8 +1,12 @@
 ---
 layout: single
-title: "Hello world"
-categories: [basic]
-# tag: [python, common]
+title: "Airflow란 어떤 것이고 언제 어디에 왜 사용하는지에 대하여"
+# date: 2024-06-01
+# last_modified_at: 2024-06-03T14:02:00
+categories: 
+    - airflow
+# tags: 
+#     - [common]
 # 목차 활성화
 toc: true
 # 목차 라벨
