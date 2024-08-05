@@ -1,58 +1,33 @@
 ---
 layout: single
-title: "Airflow란 어떤 것이고 언제 어디에 왜 사용하는지에 대하여"
+title: "Airflow란 무엇이며 언제 어디에 왜 사용하는지에 대하여"
 # date: 2024-06-01
 # last_modified_at: 2024-06-03T14:02:00
-categories: 
-    - airflow
-# tags: 
+categories:
+  - airflow
+# tags:
 #     - [common]
 # 목차 활성화
 toc: true
 # 목차 라벨
 # toc_label: 목차
 # 목차 스크롤 고정
-toc_sticky: true 
+toc_sticky: true
 # 글 좌측 프로필 안 보이게 하기
 # author_profile: false
 # 블로그 내에서 글 검색 안되도록 하기
 # search: false
 ---
 
-<!-- https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/#google_vignette
-공지사항 띄우기 -->
-**[공지사항]** 여기는 공지사항을 띄우는 공간입니다.
-{: .notice--danger}
+## Airflow란 무엇인가?
 
-<div class="notice--success">
-<h4>공지사항입니다.</h4>
-<ul>
-<li>
-1번 공지사항
-</li>
-<li>
-2번 공지사항
-</li>
-<li>
-3번 공지사항
-</li>
-</ul>
-</div>
+- 배치 작업을 개발, 스케쥴링하고 모니터링 할 수 있는 파이썬 기반의 오픈소스 플랫폼.
 
-# Hello world
-블로그 오픈
+## 왜 Airflow를 사용할까?
 
-<!-- 버튼 넣기 -->
-[버튼 예제](https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/#buttons){: .btn .btn--danger}
+- airflow는 파아썬 기반으로 다양한 툴을 연결해서 사용할 수 있는 오케스트레이션 플랫폼이기 때문에 명확한 스케쥴이 정해져있는 배치를 구성할 때 용이하게 이용할 수 있습니다.
 
-<!-- 유튜브 영상 넣기 -->
-<!-- https://mmistakes.github.io/minimal-mistakes/docs/helpers/#youtube -->
-<!-- 아래 코드에 영상 id만 넣기 -->
-{% include video id="3UOh0rKlxjg" provider="youtube" %}
+### Airflow를 사용하기에 적합하지 않은 경우
 
-
-## 코드 예제
-
-``` python
-print("hello world")
-```
+- airflow는 일정한 주기 혹은 특정 스케줄(스케줄은 얼마든지 변칙적으로 구성할 수 있으므로 반드시 규칙적인 스케줄일 필요는 없다)로 실행 되는 배치를 관리하기 적합한 목적으로 설계되었기 때문에 스트리밍 서비스처럼 무중단 혹은 초 단위 등 아주 짧은 주기로 계속해서 실행되는 작업을 관리하는 것은 적합하지 않습니다.
+- 런타임에 파이프라인이 변경될 수 있는 동적 파이프라인을 구성하면 airflow 웹UI 에서는 가장 최근 실행 버전에 대한 정의만 표현하기 때문에 파이프라인 변경 이력을 확인하기 어려워 항상 일관 된 고정 작업 이외에는 airflow 구성에 적합하지 않습니다. ~~그럼에도 불구하고 그렇게 써야만 하거나 쓰고 싶은 경우에는 불가능한 것은 아니지만 썩 좋은 경험은 아닐 것이다.~~

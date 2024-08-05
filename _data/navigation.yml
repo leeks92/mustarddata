@@ -23,6 +23,9 @@ sidebar-category:
       - title: Airflow
         url: /categories/airflow/
         category: airflow
+      - title: Notion
+        url: /categories/notion/
+        category: notion
   - title: ETC
     # children:
     # - title: athena
