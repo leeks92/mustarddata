@@ -1,35 +1,13 @@
 ---
 layout: null
+permalink: /rss.xml
 ---
+<!-- 이 파일은 더 이상 사용되지 않습니다. /rss/ 를 사용하세요. -->
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0">
   <channel>
-    <title>{{ site.title | default: site.name }}</title>
-    <description>{{ site.description }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}</link>
-    <atom:link href="{{ site.url }}{{ site.baseurl }}/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <language>ko-kr</language>
-    <generator>Jekyll</generator>
-
-    {% for post in site.posts limit:20 %}
-      <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>
-          {% if post.excerpt %}
-            {{ post.excerpt | strip_html | strip_newlines | truncate: 300 | xml_escape }}
-          {% else %}
-            {{ post.content | strip_html | strip_newlines | truncate: 300 | xml_escape }}
-          {% endif %}
-        </description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ site.url }}{{ site.baseurl }}{{ post.url }}</link>
-        <guid>{{ site.url }}{{ site.baseurl }}{{ post.url }}</guid>
-        <author>{{ post.author | default: site.author.name | default: "Daniel" }}</author>
-        {% for category in post.categories %}
-        <category>{{ category }}</category>
-        {% endfor %}
-      </item>
-    {% endfor %}
+    <title>Redirect to /rss/</title>
+    <description>This feed has been moved to /rss/</description>
+    <link>{{ site.url }}{{ site.baseurl }}/rss/</link>
   </channel>
 </rss>
