@@ -66,8 +66,9 @@ reCaptcha:
   siteKey                :
   secret                 :
 atom_feed:
-  path                   : # blank (default) uses feed.xml
-  hide                   : # true, false (default)
+  path                   : "/feed.xml" # RSS 피드 경로
+  hide                   : false # RSS 피드 공개
+  excerpt_only           : true # 전체 글 대신 요약만 포함
 search                   : # true, false (default)
 search_full_content      : # true, false (default)
 search_provider          : # lunr (default), algolia, google
@@ -150,6 +151,9 @@ footer:
       url: "/privacy/"
     - label: "이용약관"
       url: "/terms/"
+    - label: "RSS"
+      icon: "fas fa-fw fa-rss"
+      url: "/rss/"
     # - label: "GitHub"
     #   icon: "fab fa-fw fa-github"
     #   url: "https://github.com/LifeIsBelieveful"

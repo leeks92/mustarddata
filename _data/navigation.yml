@@ -8,6 +8,8 @@ main:
     url: /contact/
   - title: "검색"
     url: /search/
+  - title: "RSS"
+    url: /rss/
 sidebar-category:
   - title: Search
     url: /search/
