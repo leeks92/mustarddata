@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../train_mustarddata"
+		}
+	],
+	"settings": {
+		"pasteImage.prefix": "",
+		"pasteImage.basePath": ""
+	}
+}

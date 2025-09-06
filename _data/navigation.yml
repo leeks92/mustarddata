@@ -4,6 +4,10 @@ sidebar-category:
   - title: Search
     url: /search/
   - title: Programming
+    children:
+      - title: Python
+        url: /categories/python/
+        category: python
   - title: DATA
   - title: Cloud
     children:
