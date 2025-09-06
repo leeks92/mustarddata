@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp add:*)",
+      "Bash(claude mcp:*)",
+      "Bash(npx:*)",
+      "Bash(ccusage)",
+      "Bash(claude usage)",
+      "Bash(ruby --version)",
+      "Bash(gem --version)",
+      "Bash(bundle:*)"
+    ],
+    "defaultMode": "plan"
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "context7"
+  ],
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "say \"클로드 코드의 작업이 완료되었습니다.\""
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "korean-concise"
+}

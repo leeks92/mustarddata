@@ -1,5 +1,13 @@
 # main links
-# main:
+main:
+  - title: "홈"
+    url: /
+  - title: "소개"
+    url: /about/
+  - title: "연락처"
+    url: /contact/
+  - title: "검색"
+    url: /search/
 sidebar-category:
   - title: Search
     url: /search/
