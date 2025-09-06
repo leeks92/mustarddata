@@ -23,7 +23,7 @@ subtitle                 : # site tagline that appears below site title in masth
 name                     : "Daniel" # 글 작성자
 description              : "다니엘이 운영하는 개발 블로그" # 사이트 설명
 url                      : "https://mustarddata.com" # 도메인
-baseurl                  : # the subpath of your site, e.g. "/blog" 
+baseurl                  : ""
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
@@ -31,8 +31,8 @@ masthead_title           : # overrides the website title displayed in the masthe
 breadcrumbs              : true # true, false (default)
 words_per_minute         : 200
 enable_copy_code_button  : # true, false (default)
-copyright                : # "copyright" name, defaults to site.title
-copyright_url            : # "copyright" URL, defaults to site.url
+copyright                : "Daniel" # "copyright" name, defaults to site.title
+copyright_url            : "https://mustarddata.com" # "copyright" URL, defaults to site.url
 comments:
   provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
   disqus:
@@ -82,9 +82,12 @@ google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true
 # SEO Related
-google_site_verification :
+# kanglinda3
+google_site_verification : "TlYeRtLU4-cTpgdaF4Z46_KJPZBrBdRE4OcD_OfVnfQ"
+# dlrudtn1008
 bing_site_verification   : "205F94FFC311342465C82CF853888D4B"
-naver_site_verification  : "77ec07e8b6df4daf989cd74ac7d78eaa5bb942f6"
+# dlrudtn1008
+naver_site_verification  : "081c540ca202c2e63ad6559be85c518016a98790"
 yandex_site_verification :
 baidu_site_verification  :
 
@@ -95,13 +98,15 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 : # Open Graph/Twitter default site image
+og_image                 : "/assets/images/site-logo.png" # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type                   : "Person" # Person or Organization (defaults to Person)
+  name                   : "Daniel" # If the user or organization name differs from the site's name
+  # links: # An array of links to social media profiles
+  #   - "https://mustarddata.com"
+  #   - "https://lifeisbelieveful.github.io/"
 
 # Analytics
 analytics:
@@ -118,13 +123,13 @@ author:
   bio              : "다니엘이 운영하는 개발자 노트입니다."
   location         : "South Korea"
   email            :
-  links:
-    - label: "email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:dlrudtn1008@naver.com"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      url: "https://lifeisbelieveful.github.io/"
+  # links:
+  #   - label: "email"
+  #     icon: "fas fa-fw fa-envelope-square"
+  #     url: "mailto:dlrudtn1008@naver.com"
+  #   - label: "Website"
+  #     icon: "fas fa-fw fa-link"
+  #     url: "https://lifeisbelieveful.github.io/"
     # - label: "Twitter"
     #   icon: "fab fa-fw fa-twitter-square"
     #   # url: "https://twitter.com/"
@@ -141,15 +146,13 @@ author:
 # Site Footer
 footer:
   links:
-    # - label: "Twitter"
-    #   icon: "fab fa-fw fa-twitter-square"
-    #   # url:
-    # - label: "Facebook"
-    #   icon: "fab fa-fw fa-facebook-square"
-    #   # url:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/LifeIsBelieveful"
+    - label: "개인정보처리방침"
+      url: "/privacy/"
+    - label: "이용약관"
+      url: "/terms/"
+    # - label: "GitHub"
+    #   icon: "fab fa-fw fa-github"
+    #   url: "https://github.com/LifeIsBelieveful"
     # - label: "GitLab"
     #   icon: "fab fa-fw fa-gitlab"
     #   # url:
@@ -231,7 +234,7 @@ timezone: Asia/Seoul # https://en.wikipedia.org/wiki/List_of_tz_database_time_zo
 
 
 # Pagination with jekyll-paginate
-paginate: 10 # 기본값 5 amount of posts to show 
+paginate: 10 # 기본값 5 amount of posts to show
 paginate_path: /page:num/
 
 # Pagination with jekyll-paginate-v2
@@ -325,5 +328,5 @@ defaults:
       related: true
       show_date: true
       sidebar:
-        nav: "sidebar-category" 
+        nav: "sidebar-category"
 date_format: "%Y-%m-%d"
