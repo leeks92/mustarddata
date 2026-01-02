@@ -5,5 +5,1178 @@ search: false
 
 @charset "utf-8";
 
+// 사이드바 폭 조정
+$right-sidebar-width-narrow: 180px !default;
+$right-sidebar-width: 240px !default;
+
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+// 본문 영역 상단 공백 제거
+body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+#main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  // 모든 padding 제거 (상단 공백 완전 제거)
+  padding: 0 1em !important;
+  // Float 레이아웃을 위한 clearfix
+  @include breakpoint($large) {
+    @include clearfix;
+  }
+
+  > * {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  > .sidebar {
+    margin-top: 1em !important;
+    padding-top: 0 !important;
+    // Float 정렬: 사이드바는 왼쪽에 배치
+    @include breakpoint($large) {
+      float: left !important;
+      // 사이드바 폭 명시적 설정
+      width: calc(#{$right-sidebar-width-narrow} - 1em) !important;
+      vertical-align: top !important;
+    }
+
+    @include breakpoint($x-large) {
+      width: calc(#{$right-sidebar-width} - 1em) !important;
+    }
+  }
+
+  > .page {
+    margin-top: 1em !important;
+    padding-top: 0 !important;
+    // Float 정렬: 본문은 오른쪽에 배치
+    @include breakpoint($large) {
+      float: right !important;
+      // 사이드바 폭과 margin을 제외한 나머지 공간을 차지
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      vertical-align: top !important;
+    }
+
+    @include breakpoint($x-large) {
+      width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+    }
+  }
+
+  > .archive {
+    margin-top: 1em !important;
+    padding-top: 0 !important;
+    // Float 정렬: 아카이브 본문은 오른쪽에 배치하여 사이드바 옆에 나란히 표시
+    @include breakpoint($large) {
+      float: right !important;
+      // 사이드바 폭과 margin을 제외한 나머지 공간을 차지
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      vertical-align: top !important;
+      // Float 정렬 후 상단 여백 완전 제거
+      position: relative;
+      top: 0 !important;
+    }
+
+    @include breakpoint($x-large) {
+      width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+    }
+  }
+}
+
+.initial-content {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+
+  > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+.archive {
+  margin-top: 1em !important;
+  padding-top: 0 !important;
+  // Float 정렬: 사이드바 옆에 나란히 배치
+  @include breakpoint($large) {
+    float: right !important;
+    // 사이드바 폭을 제외한 나머지 공간을 차지하도록 width 설정 (중요!)
+    width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+    vertical-align: top !important;
+    // Float 정렬 후 상단 여백 완전 제거
+    position: relative;
+    top: 0 !important;
+  }
+
+  @include breakpoint($x-large) {
+    width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+  }
+
+  // 모든 자식 요소의 상단 여백 제거 (h1, h3 등 모든 헤딩 포함)
+  > * {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+
+    &:first-child {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      // 첫 번째 요소의 line-height도 조정
+      line-height: 1.2 !important;
+    }
+  }
+
+  // 모든 헤딩 요소의 기본 margin 오버라이드
+  > h1, > h2, > h3, > h4, > h5, > h6 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0.5em !important; // 하단 여백만 유지
+  }
+
+  // 특정 요소들의 여백 강제 제거
+  > h1.page__title,
+  > h3.archive__subtitle,
+  > .archive__subtitle {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0.5em !important; // 하단 여백만 유지
+    line-height: 1.2 !important;
+    // 추가: line-height로 인한 공백 완전 제거
+    display: block;
+  }
+
+  // h1.page__title의 line-height: 1 오버라이드
+  > h1.page__title {
+    line-height: 1.2 !important; // line-height: 1이 공백을 만들 수 있음
+  }
+
+  // h3 요소의 기본 margin 오버라이드 (h3는 기본적으로 margin-top: 2em을 가짐)
+  > h3 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  // entries-layout 컨테이너도 확인
+  > .entries-list,
+  > .entries-grid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  // 첫 번째 요소가 무엇이든 상단 여백 제거
+  > *:first-of-type {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  // 추가: 첫 번째 요소에 negative margin으로 완전히 제거
+  > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    line-height: 1.2 !important;
+  }
+}
+
+// 마스터헤드 바로 아래 본문이 오도록
+.masthead {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+
+  // masthead 내부 요소의 하단 여백도 제거
+  &__inner-wrap {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+.masthead + .initial-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  // 추가: initial-content 자체의 모든 상단 여백 제거
+  border-top: none !important;
+}
+
+.initial-content > #main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  // Float 정렬 문제 해결: 상단 정렬 강제
+  @include breakpoint($large) {
+    &::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+}
+
+// 추가: initial-content 자체의 여백도 확인
+.initial-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+
+  @include breakpoint($large) {
+    // 첫 번째 자식 요소(#main)의 상단 여백 완전 제거
+    > #main:first-child {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+  }
+
+  // initial-content 내부의 모든 첫 번째 요소
+  > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+.initial-content > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+// 추가: #main과 .archive 사이의 여백도 확인
+#main > .archive {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+
+  // #main의 첫 번째 자식인 경우
+  &:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  // #main의 두 번째 자식인 경우 (sidebar 다음)
+  &:nth-child(2) {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+// #main 내부의 첫 번째 요소들 정렬
+#main {
+  @include breakpoint($large) {
+    // Float 정렬 후 상단 정렬 강제
+    &::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    // 모든 직접 자식 요소를 상단 정렬
+    > .sidebar {
+      float: left !important;
+      // 사이드바 폭 명시적 설정
+      width: calc(#{$right-sidebar-width-narrow} - 1em) !important;
+      margin-top: 1em !important;
+      vertical-align: top !important;
+      position: relative;
+      top: 0 !important;
+    }
+
+    @include breakpoint($x-large) {
+      > .sidebar {
+        width: calc(#{$right-sidebar-width} - 1em) !important;
+      }
+    }
+
+    > .page {
+      float: right !important;
+      margin-top: 1em !important;
+      vertical-align: top !important;
+      position: relative;
+      top: 0 !important;
+      // 사이드바 폭과 margin을 제외한 나머지 공간을 차지
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+    }
+
+    > .archive {
+      float: right !important;
+      margin-top: 1em !important;
+      vertical-align: top !important;
+      position: relative;
+      top: 0 !important;
+      // 사이드바 폭과 margin을 제외한 나머지 공간을 차지
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+    }
+
+    @include breakpoint($x-large) {
+      > .page,
+      > .archive {
+        width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+      }
+    }
+
+    // 사이드바가 본문보다 먼저 오는 경우, 본문이 사이드바 옆에 나란히 배치되도록
+    > .sidebar + .archive,
+    > .sidebar + .page {
+      margin-top: 1em !important;
+      padding-top: 0 !important;
+      // Float 정렬로 인한 위치 오프셋 제거
+      top: 0 !important;
+      // 사이드바 옆에 나란히 배치
+      clear: none !important;
+      float: right !important;
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+    }
+
+    // 본문이 사이드바와 나란히 상단에서 시작하도록
+    > .archive,
+    > .page {
+      // 사이드바의 높이에 상관없이 항상 상단에서 시작
+      margin-top: 1em !important;
+      padding-top: 0 !important;
+      // Float 정렬에서 사이드바 옆에 배치
+      clear: none !important;
+      float: right !important;
+      vertical-align: top !important;
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+    }
+
+    @include breakpoint($x-large) {
+      > .sidebar + .archive,
+      > .sidebar + .page,
+      > .archive,
+      > .page {
+        width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+      }
+    }
+
+    // .archive 요소의 첫 번째 자식 요소도 상단 정렬
+    > .archive {
+      // 첫 번째 자식 요소의 모든 여백 제거
+      > *:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        // line-height로 인한 공백도 제거
+        line-height: 1.2 !important;
+        // 추가: display 속성으로 공백 제거
+        display: block;
+      }
+
+      // h1.page__title이 첫 번째 요소인 경우 특별 처리
+      > h1.page__title:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        line-height: 1.2 !important;
+        display: block;
+      }
+    }
+  }
+}
+
+// 사이드바와 본문 영역 사이 간격 추가
+.sidebar {
+  @include breakpoint($large) {
+    float: left !important;
+    // 사이드바 폭 명시적 설정 (중요!)
+    width: calc(#{$right-sidebar-width-narrow} - 1em) !important;
+    margin-right: 3em !important;
+    margin-top: 1em !important;
+    padding-top: 0 !important;
+    // Float 정렬: 상단 정렬 강제
+    vertical-align: top !important;
+    position: relative;
+    top: 0 !important;
+    // 추가: 사이드바가 본문 위치에 영향을 주지 않도록 높이 제한
+    height: auto !important;
+    max-height: none !important;
+    // 추가: 사이드바 폭이 본문 위치에 영향을 주지 않도록
+    box-sizing: border-box;
+    // 프로필이 있을 때는 최소 높이 보장
+    min-height: auto !important;
+  }
+
+  @include breakpoint($x-large) {
+    width: calc(#{$right-sidebar-width} - 1em) !important;
+  }
+
+  // 사이드바의 첫 번째 자식 요소의 상단 여백 제거 (중요!)
+  > *:first-child:not(.h-card) {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important; // 하단 여백도 제거
+    line-height: 1.2 !important;
+    // 추가: 첫 번째 요소의 높이를 최소화
+    min-height: 0 !important;
+    // 추가: 첫 번째 요소가 사이드바 높이에 영향을 주지 않도록
+    display: block;
+    // 추가: 첫 번째 요소의 높이를 0으로 설정하여 본문 위치에 영향 없도록
+    height: auto !important;
+  }
+
+  // 프로필 이미지가 있는 경우 예외 처리 - 가장 높은 우선순위
+  > .h-card {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    .author__avatar {
+      min-height: auto !important;
+      height: auto !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: auto !important;
+
+      a {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      img {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        max-width: 110px !important;
+        width: auto !important;
+        height: auto !important;
+        min-height: 110px !important;
+        min-width: 110px !important;
+      }
+    }
+  }
+
+  // 모든 자식 요소의 상단 여백 제거 (h-card 제외)
+  > *:not(.h-card) {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+
+    &:first-child {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      margin-bottom: 0 !important;
+      min-height: 0 !important;
+      display: block;
+      height: auto !important;
+    }
+  }
+}
+
+.page {
+  @include breakpoint($large) {
+    float: right !important;
+    // 사이드바 폭과 margin을 제외한 나머지 공간을 차지
+    width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+    padding-right: 0 !important; // width로 계산했으므로 padding 제거
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  @include breakpoint($x-large) {
+    width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+    padding-right: 0 !important;
+  }
+
+  // TOC가 있을 때만 본문 내용이 TOC와 겹치지 않도록 padding 추가
+  .page__content:has(.sidebar__right) {
+    @include breakpoint($large) {
+      // TOC가 있는 경우 오른쪽 padding 추가
+      padding-right: calc(#{$right-sidebar-width-narrow} + 1em) !important;
+    }
+
+    @include breakpoint($x-large) {
+      padding-right: calc(#{$right-sidebar-width} + 1em) !important;
+    }
+  }
+
+  // page__inner-wrap과 그 내부 요소들이 본문 영역 너비에 맞도록 제한
+  .page__inner-wrap {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    // page__meta와 그 아래 요소들이 본문 영역 너비를 벗어나지 않도록
+    // TOC가 있을 때 page__content와 동일한 padding 적용
+    .page__meta,
+    .page__share,
+    .pagination,
+    .post__pagination,
+    footer.page__meta {
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  }
+
+  // TOC가 있을 때 page__meta도 page__content와 동일한 padding 적용
+  .page__inner-wrap:has(.sidebar__right) {
+    .page__meta,
+    .page__share,
+    .pagination,
+    .post__pagination,
+    footer.page__meta {
+      @include breakpoint($large) {
+        padding-right: calc(#{$right-sidebar-width-narrow} + 1em) !important;
+      }
+
+      @include breakpoint($x-large) {
+        padding-right: calc(#{$right-sidebar-width} + 1em) !important;
+      }
+    }
+  }
+
+  // page 내부의 pagination, comments, related도 본문 영역 너비에 맞도록
+  .pagination,
+  .page__comments,
+  .page__related,
+  .page__share {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important; // 구분선이 영역 너비를 넘지 않도록
+  }
+
+  // pagination 위의 구분선 제거
+  .page__share + .pagination,
+  .page__comments + .pagination,
+  .page__meta + .pagination {
+    border-top: none !important;
+  }
+
+  // TOC가 있을 때 pagination, comments, related, share도 page__content와 동일한 padding 적용
+  &:has(.sidebar__right) {
+    .pagination,
+    .page__comments,
+    .page__related,
+    .page__share {
+      @include breakpoint($large) {
+        padding-right: calc(#{$right-sidebar-width-narrow} + 1em) !important;
+      }
+
+      @include breakpoint($x-large) {
+        padding-right: calc(#{$right-sidebar-width} + 1em) !important;
+      }
+    }
+
+  }
+}
+
+// #main 내부의 page__related도 page__comments와 동일한 너비로 설정
+#main {
+  .page__related {
+    // page__related 위의 구분선 제거
+    border-top: none !important;
+
+    @include breakpoint($large) {
+      // page__comments와 동일한 너비 (사이드바 제외)
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      max-width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      float: right !important;
+      box-sizing: border-box !important;
+    }
+
+    @include breakpoint($x-large) {
+      width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+      max-width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+    }
+  }
+
+  // TOC가 있을 때 page__related도 page__content와 동일한 padding 적용
+  .page:has(.sidebar__right) ~ .page__related {
+    @include breakpoint($large) {
+      width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      max-width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      padding-right: calc(#{$right-sidebar-width-narrow} + 1em) !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+
+    @include breakpoint($x-large) {
+      width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+      max-width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+      padding-right: calc(#{$right-sidebar-width} + 1em) !important;
+    }
+  }
+
+  // page__share도 본문 영역 너비에 맞도록
+  .page__share {
+    @include breakpoint($large) {
+      max-width: calc(100% - #{$right-sidebar-width-narrow} - 3em) !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+
+    @include breakpoint($x-large) {
+      max-width: calc(100% - #{$right-sidebar-width} - 3em) !important;
+    }
+  }
+}
+
+// Dark Mode Toggle Button
+.dark-mode__toggle {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  height: $nav-toggle-height;
+  border: 0;
+  outline: none;
+  color: $masthead-link-color;
+  background-color: transparent;
+  cursor: pointer;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+
+  &:hover {
+    color: $masthead-link-color-hover;
+  }
+
+  i {
+    display: flex;
+    align-items: center;
+  }
+}
+
+// 프로필 이미지 중앙 정렬 - 강제 표시
+.sidebar {
+  .h-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .author__avatar {
+    @include breakpoint($large) {
+      text-align: center !important;
+      display: block !important;
+      width: auto !important;
+      margin: 0 auto !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      min-height: auto !important;
+      height: auto !important;
+
+      a {
+        display: inline-block !important;
+        margin: 0 auto !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      img {
+        margin: 0 auto !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        max-width: 110px !important;
+        width: auto !important;
+        height: auto !important;
+        min-height: 110px !important;
+        min-width: 110px !important;
+      }
+    }
+  }
+
+  .author__content {
+    @include breakpoint($large) {
+      text-align: center !important;
+      display: block !important;
+      visibility: visible !important;
+    }
+  }
+}
+
+// 헤더 수직 정렬 개선
+.masthead {
+  &__inner-wrap {
+    align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+  }
+
+  .greedy-nav {
+    align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    justify-content: flex-start;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    width: 100%;
+
+    .site-title,
+    .site-logo {
+      margin-right: auto;
+    }
+
+    .visible-links {
+      flex: 0 0 auto !important;
+      -webkit-box-flex: 0 !important;
+      -ms-flex: 0 0 auto !important;
+      justify-content: flex-end !important;
+      -webkit-box-pack: end !important;
+      -ms-flex-pack: end !important;
+      margin-left: auto;
+      order: 2;
+
+      li {
+        display: flex;
+        align-items: center;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .search__toggle,
+    .dark-mode__toggle {
+      order: 3;
+      margin-left: 0.5rem;
+    }
+
+    .greedy-nav__toggle {
+      order: 4;
+    }
+  }
+
+  .search__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+  }
+}
+
+// Dark Mode Styles
+body.dark-mode {
+  background-color: #252a34;
+  color: #eaeaea;
+
+  .page {
+    background-color: #252a34;
+    color: #eaeaea;
+  }
+
+  .masthead {
+    background-color: #252a34 !important;
+    border-bottom: 1px solid mix(#fff, #252a34, 20%);
+    color: #eaeaea !important;
+
+    &__inner-wrap {
+      background-color: #252a34 !important;
+      color: #eaeaea !important;
+      align-items: center !important;
+      -webkit-box-align: center !important;
+      -ms-flex-align: center !important;
+    }
+
+    &__menu {
+      background-color: #252a34 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .site-title {
+      color: #eaeaea !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .site-subtitle {
+      color: mix(#fff, #eaeaea, 20%) !important;
+    }
+
+    .greedy-nav {
+      background-color: #252a34 !important;
+      align-items: center !important;
+      -webkit-box-align: center !important;
+      -ms-flex-align: center !important;
+      display: flex !important;
+      justify-content: flex-start !important;
+      -webkit-box-pack: start !important;
+      -ms-flex-pack: start !important;
+      width: 100% !important;
+
+      .site-title,
+      .site-logo {
+        margin-right: auto !important;
+      }
+
+      a {
+        color: #eaeaea !important;
+        display: flex !important;
+        align-items: center !important;
+
+        &:hover {
+          color: mix(#000, #eaeaea, 20%) !important;
+        }
+
+        &.site-title {
+          color: #eaeaea !important;
+          align-items: center !important;
+        }
+      }
+
+      .visible-links {
+        display: flex !important;
+        align-items: center !important;
+        flex: 0 0 auto !important;
+        -webkit-box-flex: 0 !important;
+        -ms-flex: 0 0 auto !important;
+        justify-content: flex-end !important;
+        -webkit-box-pack: end !important;
+        -ms-flex-pack: end !important;
+        margin-left: auto !important;
+        order: 2 !important;
+
+        li {
+          display: flex !important;
+          align-items: center !important;
+        }
+
+        a {
+          color: #eaeaea !important;
+          display: flex !important;
+          align-items: center !important;
+
+          &:hover {
+            color: mix(#000, #eaeaea, 20%) !important;
+          }
+
+          &:before {
+            background: mix(#00adb5, #eaeaea, 40%) !important;
+          }
+        }
+      }
+
+      .search__toggle,
+      .dark-mode__toggle {
+        order: 3 !important;
+        margin-left: 0.5rem !important;
+      }
+
+      .greedy-nav__toggle {
+        order: 4 !important;
+      }
+
+      .hidden-links {
+        background-color: #252a34 !important;
+        border-color: mix(#fff, #252a34, 20%) !important;
+
+        a {
+          color: #eaeaea !important;
+        }
+      }
+    }
+
+    .masthead__menu-item {
+      display: flex !important;
+      align-items: center !important;
+
+      a {
+        color: #eaeaea !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+    }
+  }
+
+  .page__content {
+    color: #eaeaea;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #eaeaea;
+    }
+
+    a {
+      color: mix(#00adb5, #eaeaea, 40%);
+
+      &:hover {
+        color: mix(#fff, mix(#00adb5, #eaeaea, 40%), 25%);
+      }
+
+      &:visited {
+        color: mix(#000, mix(#00adb5, #eaeaea, 40%), 25%);
+      }
+    }
+
+    code {
+      background-color: mix(#000, #252a34, 15%);
+      color: #eaeaea;
+    }
+
+    pre {
+      background-color: mix(#000, #252a34, 15%);
+      color: #eaeaea;
+    }
+
+    blockquote {
+      border-left-color: mix(#fff, #252a34, 20%);
+      color: mix(#fff, #eaeaea, 20%);
+    }
+
+    .notice {
+      background-color: mix(#000, #252a34, 15%);
+      color: #eaeaea;
+    }
+  }
+
+  .sidebar {
+    background-color: #252a34;
+    color: #eaeaea;
+
+    a {
+      color: mix(#00adb5, #eaeaea, 40%);
+    }
+
+    .nav__title,
+    .nav__sub-title {
+      color: #eaeaea !important;
+    }
+
+    .nav__list {
+      color: #eaeaea;
+
+      .nav__items {
+        color: #eaeaea;
+      }
+
+      .nav__item {
+        color: #eaeaea;
+
+        .nav__toggle-label {
+          color: #eaeaea !important;
+        }
+
+        .nav__children {
+          a {
+            color: mix(#00adb5, #eaeaea, 40%) !important;
+          }
+        }
+      }
+    }
+  }
+
+  // TOC (On This Page) 다크 모드 색상
+  .toc {
+    background-color: mix(#000, #252a34, 15%) !important;
+    border-color: mix(#fff, #252a34, 20%) !important;
+
+    .nav__title {
+      background: mix(#00adb5, #252a34, 40%) !important; // 다크 모드에서도 빨간색이 아닌 색상
+      color: #eaeaea !important;
+    }
+
+    .toc__menu {
+      a {
+        color: mix(#00adb5, #eaeaea, 40%) !important;
+
+        &:hover {
+          color: #eaeaea !important;
+        }
+      }
+
+      .active a {
+        background-color: mix(#00adb5, #252a34, 40%) !important;
+        color: #eaeaea !important;
+      }
+    }
+  }
+
+  .archive__subtitle {
+    color: #eaeaea !important;
+    border-bottom-color: mix(#fff, #252a34, 20%) !important;
+  }
+
+  .archive__item {
+    .archive__item-title {
+      a {
+        color: #eaeaea !important;
+
+        &:hover {
+          color: mix(#00adb5, #eaeaea, 40%) !important;
+        }
+      }
+    }
+
+    .archive__item-excerpt {
+      color: mix(#fff, #eaeaea, 20%) !important;
+    }
+  }
+
+  .page__footer {
+    background-color: mix(#000, #252a34, 30%);
+    color: #eaeaea;
+  }
+
+  .search__toggle,
+  .dark-mode__toggle {
+    color: #eaeaea;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+
+    &:hover {
+      color: mix(#000, #eaeaea, 20%);
+    }
+
+    i {
+      display: flex !important;
+      align-items: center !important;
+    }
+  }
+
+  .greedy-nav__toggle {
+    .navicon {
+      background: #eaeaea;
+
+      &:before,
+      &:after {
+        background: #eaeaea;
+      }
+    }
+  }
+
+  .greedy-nav a {
+    color: #eaeaea;
+  }
+
+  .breadcrumbs {
+    a {
+      color: mix(#00adb5, #eaeaea, 40%);
+    }
+  }
+
+  .page__meta {
+    color: mix(#fff, #eaeaea, 20%);
+  }
+
+  .author__avatar img {
+    border-color: mix(#fff, #252a34, 20%);
+  }
+
+  .pagination--pager {
+    background-color: mix(#000, #252a34, 15%);
+    color: #eaeaea;
+    border-color: mix(#fff, #252a34, 20%);
+
+    &:hover {
+      background-color: mix(#000, #252a34, 25%);
+    }
+  }
+
+  .archive__item {
+    border-bottom-color: mix(#fff, #252a34, 20%);
+  }
+
+  .archive__item-title a {
+    color: mix(#00adb5, #eaeaea, 40%);
+  }
+
+  .archive__item-excerpt {
+    color: mix(#fff, #eaeaea, 20%);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  input[type="password"],
+  textarea {
+    background-color: mix(#000, #252a34, 15%);
+    color: #eaeaea;
+    border-color: mix(#fff, #252a34, 20%);
+  }
+
+  .search-content {
+    background-color: #252a34;
+  }
+
+  .search__input {
+    background-color: mix(#000, #252a34, 15%);
+    color: #eaeaea;
+    border-color: mix(#fff, #252a34, 20%);
+  }
+}
+
+// 카테고리 접기/펼치기 기능
+.nav__item {
+  position: relative;
+
+  .nav__toggle {
+    display: none;
+  }
+
+  .nav__toggle-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    .nav__toggle-icon {
+      font-size: 0.75em;
+      transition: transform 0.3s ease;
+      margin-left: 0.5em;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .nav__children {
+    margin: 0.5em 0 0.5em 1em;
+    padding: 0;
+    list-style: none;
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+  }
+
+  // 체크박스가 체크되지 않았을 때 (접힌 상태)
+  .nav__toggle:not(:checked) ~ .nav__children {
+    max-height: 0;
+    margin: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+  }
+
+  .nav__toggle:not(:checked) ~ .nav__toggle-label .nav__toggle-icon {
+    transform: rotate(-90deg);
+  }
+}
+
+// TOC (On This Page) 색상 변경 - 빨간색 제거
+.toc {
+  .nav__title {
+    background: #6f777d !important; // 회색 계열로 변경 (원래 primary-color 대신)
+    color: #fff !important;
+  }
+
+  // 활성 링크 색상도 빨간색이 아닌 다른 색으로 변경
+  .active a {
+    background-color: #6f777d !important;
+    color: #fff !important;
+  }
+}
+
+// 본문 하단 카테고리 섹션 숨기기
+.page__taxonomy {
+  display: none !important;
+}

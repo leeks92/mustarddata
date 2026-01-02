@@ -34,15 +34,3 @@ AWS에서 제공하는 서버리스 서비스인 Athena는 실제로 실행한 �
 1. 스캔하는 데이터 크기 감소로 인한 비용 절감
 2. 쿼리 속도 향상
 3. 네트워크 비용 감소
-
-aws s3 ls s3://vaivcompany-dev/package_adid_master/20240727 --recursive --summarize --human-readable --profile vaiv
-aws s3 ls s3://vaivcompany-dev/package_adid_master_test --recursive --summarize --human-readable --profile vaiv
-aws s3 ls s3://vaivcompany-dev/package_adid_master_snappy --recursive --summarize --human-readable --profile vaiv
-aws s3 ls s3://vaivcompany-dev/package_adid_master_gzip --recursive --summarize --human-readable --profile vaiv
-aws s3 ls s3://vaivcompany-dev/package_adid_master_lz4 --recursive --summarize --human-readable --profile vaiv
-aws s3 ls s3://vaivcompany-dev/package_adid_master_lzo --recursive --summarize --human-readable --profile vaiv
-aws s3 ls s3://vaivcompany-dev/package_adid_master_zstd_3 --recursive --summarize --human-readable --profile vaiv
-
-https://hook.dooray.com/services/2044091570192967999/3758767381136131139/keNhgUSHQDO5z5jNwpiSgg
-https://hook.dooray.com/services/2044091570192967999/3804568467182843756/ZdnndlsCRMSvAwKe-BlvEg
-https://hook.dooray.com/services/2044091570192967999/3804568467182843756/ZdnndlsCRMSvAwKe-BlvEg

@@ -6,8 +6,10 @@
   @include clearfix;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 0;
   padding-left: 1em;
   padding-right: 1em;
+  padding-top: 0;
   -webkit-animation: $intro-transition;
   animation: $intro-transition;
   max-width: 100%;
@@ -49,7 +51,7 @@ body {
 
   .page__inner-wrap {
     float: left;
-    margin-top: 1em;
+    margin-top: 0;
     margin-left: 0;
     margin-right: 0;
     width: 100%;
@@ -94,18 +96,47 @@ body {
   }
 
 	h1, h2, h3, h4, h5, h6 {
+		position: relative;
+		
 		.header-link {
 			position: relative;
 			left: 0.5em;
 			opacity: 0;
 			font-size: 0.8em;
+			margin-right: 0.3em;
+			-webkit-transition: opacity 0.2s ease-in-out 0.1s;
+			-moz-transition: opacity 0.2s ease-in-out 0.1s;
+			-o-transition: opacity 0.2s ease-in-out 0.1s;
+			transition: opacity 0.2s ease-in-out 0.1s;
+			
+			.sr-only {
+				position: absolute !important;
+				clip: rect(1px, 1px, 1px, 1px) !important;
+				height: 1px !important;
+				width: 1px !important;
+				border: 0 !important;
+				overflow: hidden !important;
+			}
+		}
+		
+		.header-clipboard-button {
+			position: relative;
+			left: 0.5em;
+			opacity: 0;
+			font-size: 0.8em;
+			background: none;
+			border: none;
+			outline: none;
+			cursor: pointer;
+			color: inherit;
 			-webkit-transition: opacity 0.2s ease-in-out 0.1s;
 			-moz-transition: opacity 0.2s ease-in-out 0.1s;
 			-o-transition: opacity 0.2s ease-in-out 0.1s;
 			transition: opacity 0.2s ease-in-out 0.1s;
 		}
 
-		&:hover .header-link {
+		&:hover .header-link,
+		&:hover .header-clipboard-button {
 			opacity: 1;
 		}
 	}

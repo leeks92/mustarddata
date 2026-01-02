@@ -32,6 +32,9 @@ $(document).ready(function () {
     }, 400);
   });
 
+  // Dark mode toggle은 head.html에서 처리하므로 여기서는 제거
+  // 중복 실행 방지를 위해 주석 처리
+
   // Smooth scrolling
   var scroll = new SmoothScroll('a[href*="#"]', {
     offset: 20,
@@ -123,21 +126,62 @@ $(document).ready(function () {
   });
 
   // Add anchors for headings
-  document
-    .querySelector(".page__content")
-    .querySelectorAll("h1, h2, h3, h4, h5, h6")
-    .forEach(function (element) {
-      var id = element.getAttribute("id");
-      if (id) {
-        var anchor = document.createElement("a");
-        anchor.className = "header-link";
-        anchor.href = "#" + id;
-        anchor.innerHTML =
-          '<span class="sr-only">Permalink</span><i class="fas fa-link"></i>';
-        anchor.title = "Permalink";
-        element.appendChild(anchor);
-      }
-    });
+  var pageContent = document.querySelector(".page__content");
+  if (pageContent) {
+    pageContent
+      .querySelectorAll("h1, h2, h3, h4, h5, h6")
+      .forEach(function (element) {
+        var id = element.getAttribute("id");
+        if (id) {
+          // Permalink (hidden)
+          var anchor = document.createElement("a");
+          anchor.className = "header-link";
+          anchor.href = "#" + id;
+          anchor.innerHTML =
+            '<span class="sr-only">Permalink</span><i class="fas fa-link"></i>';
+          anchor.title = "Permalink";
+          element.appendChild(anchor);
+          
+          // Clipboard button
+          var clipboardButton = document.createElement("button");
+          clipboardButton.className = "header-clipboard-button";
+          clipboardButton.title = "Copy heading link to clipboard";
+          clipboardButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
+          clipboardButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var url = window.location.origin + window.location.pathname + "#" + id;
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(url).then(function() {
+                clipboardButton.innerHTML = '<span class="sr-only">Copied!</span><i class="fas fa-check"></i>';
+                setTimeout(function() {
+                  clipboardButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
+                }, 1500);
+              });
+            } else {
+              // Fallback for older browsers
+              var textarea = document.createElement("textarea");
+              textarea.value = url;
+              textarea.style.position = "fixed";
+              textarea.style.opacity = "0";
+              document.body.appendChild(textarea);
+              textarea.select();
+              try {
+                document.execCommand("copy");
+                clipboardButton.innerHTML = '<span class="sr-only">Copied!</span><i class="fas fa-check"></i>';
+                setTimeout(function() {
+                  clipboardButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
+                }, 1500);
+              } catch (err) {
+                console.error("Failed to copy:", err);
+              }
+              document.body.removeChild(textarea);
+            }
+          });
+          element.appendChild(clipboardButton);
+        }
+      });
+  }
 
   // Add copy button for <pre> blocks
   var copyText = function (text) {
@@ -159,7 +203,11 @@ $(document).ready(function () {
 
       textarea.setAttribute("readonly", "");
       textarea.value = text;
-      document.body.appendChild(textarea);
+      if (document.body) {
+        document.body.appendChild(textarea);
+      } else {
+        return false;
+      }
 
       var success = true;
       try {
@@ -210,13 +258,15 @@ $(document).ready(function () {
   };
 
   if (window.enable_copy_code_button) {
-    document
-      .querySelectorAll(".page__content pre.highlight > code")
-      .forEach(function (element, index, parentList) {
+    var pageContent = document.querySelector(".page__content");
+    if (pageContent) {
+      pageContent
+        .querySelectorAll("pre.highlight > code")
+        .forEach(function (element, index, parentList) {
         // Locate the <pre> element
         var container = element.parentElement;
         // Sanity check - don't add an extra button if there's already one
-        if (container.firstElementChild.tagName.toLowerCase() !== "code") {
+        if (!container || !container.firstElementChild || container.firstElementChild.tagName.toLowerCase() !== "code") {
           return;
         }
         var copyButton = document.createElement("button");
@@ -226,5 +276,6 @@ $(document).ready(function () {
         copyButton.addEventListener("click", copyButtonEventListener);
         container.prepend(copyButton);
       });
+    }
   }
 });

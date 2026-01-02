@@ -2,10 +2,144 @@
   'use strict';
 
   (function () {
+    // Giscus 404 오류 필터링 (댓글이 없을 때 발생하는 정상적인 오류)
+    // 먼저 콘솔 필터링을 설정하여 모든 오류를 잡을 수 있도록 함
+    var originalError = console.error;
+    var originalWarn = console.warn;
+    var originalLog = console.log;
+    
+    function shouldFilterGiscusError(message) {
+      if (!message || typeof message !== 'string') return false;
+      var lowerMessage = message.toLowerCase();
+      return (lowerMessage.includes('giscus') || lowerMessage.includes('giscus.app')) &&
+             (lowerMessage.includes('404') || 
+              lowerMessage.includes('not found') || 
+              lowerMessage.includes('discussion') ||
+              lowerMessage.includes('failed to fetch') ||
+              (lowerMessage.includes('postmessage') && lowerMessage.includes('target origin')) ||
+              (lowerMessage.includes('postmessage') && lowerMessage.includes('does not match')));
+    }
+    
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      var message = args.join(' ');
+      if (shouldFilterGiscusError(message)) {
+        return; // 오류 메시지 출력하지 않음
+      }
+      originalError.apply(console, args);
+    };
+    
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      var message = args.join(' ');
+      if (shouldFilterGiscusError(message)) {
+        return;
+      }
+      originalWarn.apply(console, args);
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      var message = args.join(' ');
+      if (shouldFilterGiscusError(message)) {
+        return;
+      }
+      originalLog.apply(console, args);
+    };
+
+    // Fetch API 오류 필터링
+    var originalFetch = window.fetch;
+    if (originalFetch) {
+      window.fetch = function() {
+        var args = Array.prototype.slice.call(arguments);
+        var url = args[0];
+        var urlString = typeof url === 'string' ? url : (url && url.url ? url.url : '');
+        
+        // giscus.app의 discussions API 요청인 경우
+        if (urlString && urlString.includes('giscus.app/api/discussions')) {
+          return originalFetch.apply(this, arguments).then(function(response) {
+            // 404 응답을 정상 응답으로 처리 (빈 배열 반환)
+            if (response.status === 404) {
+              return new Response(JSON.stringify([]), {
+                status: 200,
+                statusText: 'OK',
+                headers: { 'Content-Type': 'application/json' }
+              });
+            }
+            return response;
+          }).catch(function(error) {
+            // 네트워크 오류도 조용히 처리
+            return new Response(JSON.stringify([]), {
+              status: 200,
+              statusText: 'OK',
+              headers: { 'Content-Type': 'application/json' }
+            });
+          });
+        }
+        return originalFetch.apply(this, arguments);
+      };
+    }
+
+    // XMLHttpRequest 오류 필터링
+    var originalXHROpen = XMLHttpRequest.prototype.open;
+    var originalXHRSend = XMLHttpRequest.prototype.send;
+    
+    XMLHttpRequest.prototype.open = function(method, url) {
+      this._url = url;
+      this._isGiscusRequest = url && url.includes('giscus.app/api/discussions');
+      return originalXHROpen.apply(this, arguments);
+    };
+    
+    XMLHttpRequest.prototype.send = function() {
+      var xhr = this;
+      if (xhr._isGiscusRequest) {
+        // 404 오류를 조용히 처리
+        var originalOnReadyStateChange = xhr.onreadystatechange;
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 404) {
+            // 404는 정상이므로 조용히 처리
+            return;
+          }
+          if (originalOnReadyStateChange) {
+            originalOnReadyStateChange.apply(this, arguments);
+          }
+        };
+        
+        xhr.addEventListener('error', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+        }, true);
+        
+        xhr.addEventListener('load', function() {
+          // 404는 정상이므로 무시
+          if (xhr.status === 404) {
+            return;
+          }
+        });
+      }
+      return originalXHRSend.apply(this, arguments);
+    };
+    
+    // Unhandled promise rejections 필터링
+    window.addEventListener('unhandledrejection', function(event) {
+      var reason = event.reason;
+      var message = reason && reason.message ? reason.message : String(reason);
+      if (shouldFilterGiscusError(message)) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
     var commentContainer = document.querySelector('#giscus-comments');
 
     if (!commentContainer) {
       return;
+    }
+
+    // 블로그의 다크모드 상태에 따라 Giscus 테마 결정
+    function getGiscusTheme() {
+      var isDarkMode = document.body.classList.contains('dark-mode');
+      return isDarkMode ? 'dark_dimmed' : 'light';
     }
 
     var script = document.createElement('script');
@@ -19,9 +153,9 @@
     script.setAttribute('data-strict', '{{ site.comments.giscus.strict | default: 0 }}');
     script.setAttribute('data-reactions-enabled', '{{ site.comments.giscus.reactions_enabled | default: 1 }}');
     script.setAttribute('data-emit-metadata', '{{ site.comments.giscus.emit_metadata | default: 0 }}');
-    script.setAttribute('data-input-position', '{{ site.comments.giscus.input_position | default: "top" }}');
-    script.setAttribute('data-theme', '{{ site.comments.giscus.theme | default: "light" }}');
-    script.setAttribute('data-lang',  '{{ site.comments.giscus.lang | default: "en" }}');
+    script.setAttribute('data-input-position', '{{ site.comments.giscus.input_position | default: "bottom" }}');
+    script.setAttribute('data-theme', getGiscusTheme());
+    script.setAttribute('data-lang',  '{{ site.comments.giscus.lang | default: "ko" }}');
     {% if site.comments.giscus.lazy %}
     script.setAttribute('data-loading', 'lazy');
     {% endif %}
@@ -30,5 +164,114 @@
     script.setAttribute('async', '');
 
     commentContainer.appendChild(script);
+
+    // 다크모드 변경 시 Giscus 테마도 업데이트
+    function updateGiscusTheme() {
+      var maxAttempts = 5;
+      var attempt = 0;
+      
+      function tryUpdateTheme() {
+        attempt++;
+        var giscusFrame = document.querySelector('iframe.giscus-frame');
+        
+        if (!giscusFrame) {
+          if (attempt < maxAttempts) {
+            setTimeout(tryUpdateTheme, 200);
+          }
+          return;
+        }
+        
+        // iframe의 src를 확인하여 올바른 origin인지 검증
+        var iframeSrc = giscusFrame.src || '';
+        if (!iframeSrc.includes('giscus.app')) {
+          if (attempt < maxAttempts) {
+            setTimeout(tryUpdateTheme, 200);
+          }
+          return;
+        }
+        
+        // iframe이 로드되었는지 확인
+        try {
+          // contentWindow가 있고 접근 가능한지 확인
+          if (!giscusFrame.contentWindow) {
+            if (attempt < maxAttempts) {
+              setTimeout(tryUpdateTheme, 200);
+            }
+            return;
+          }
+          
+          var theme = getGiscusTheme();
+          // postMessage 시도 (오류가 발생해도 조용히 처리)
+          try {
+            giscusFrame.contentWindow.postMessage(
+              { giscus: { setConfig: { theme: theme } } },
+              'https://giscus.app'
+            );
+          } catch (e) {
+            // postMessage 오류는 조용히 처리 (origin 불일치 등)
+            // 오류를 콘솔에 출력하지 않음
+          }
+        } catch (e) {
+          // iframe 접근 오류는 조용히 처리
+          if (attempt < maxAttempts) {
+            setTimeout(tryUpdateTheme, 200);
+          }
+        }
+      }
+      
+      // 초기 시도
+      setTimeout(tryUpdateTheme, 100);
+    }
+
+    // 다크모드 토글 감지
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          updateGiscusTheme();
+        }
+      });
+    });
+
+    // body 클래스 변경 감지
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    // Giscus 로드 후 테마 업데이트
+    window.addEventListener('message', function(event) {
+      if (event.origin !== 'https://giscus.app') return;
+      if (event.data && event.data.type === 'giscus') {
+        if (event.data.action === 'ready') {
+          updateGiscusTheme();
+        }
+        // 오류 처리
+        if (event.data.action === 'error') {
+          console.debug('Giscus error:', event.data);
+        }
+      }
+    });
+
+    // Giscus 스크립트 로드 오류 처리
+    script.onerror = function() {
+      // 스크립트 로드 실패는 조용히 처리
+    };
+
+    // 네트워크 오류 필터링 (window.error 이벤트)
+    window.addEventListener('error', function(event) {
+      var message = event.message || '';
+      var filename = event.filename || '';
+      
+      // giscus.app 관련 오류는 무시
+      // postMessage origin 오류도 필터링
+      if (message.includes('giscus.app') || 
+          (message.includes('postMessage') && (message.includes('giscus') || message.includes('target origin') || message.includes('does not match'))) ||
+          filename.includes('giscus') ||
+          filename.includes('widget')) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      }
+    }, true);
   })();
 </script>

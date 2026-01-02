@@ -2,28 +2,31 @@
 main:
   - title: "홈"
     url: /
-  - title: "소개"
-    url: /about/
-  - title: "연락처"
-    url: /contact/
-  - title: "검색"
-    url: /search/
-  - title: "RSS"
-    url: /rss/
 sidebar-category:
-  - title: Search
-    url: /search/
-  - title: Programming
-    children:
-      - title: Python
-        url: /categories/python/
-        category: python
+  - title: Frontend
+    url: /categories/frontend/
+    category: frontend
+  - title: Backend
+    url: /categories/backend/
+    category: backend
   - title: DATA
+    children:
+      - title: Database
+        url: /categories/database/
+        category: database
   - title: Cloud
     children:
       - title: AWS
         url: /categories/aws/
         category: aws
+  - title: AI
+    children:
+      - title: Cursor AI
+        url: /categories/ai/
+        category: ai
+      - title: MCP
+        url: /categories/mcp/
+        category: mcp
   - title: Knowledge
     children:
       - title: ChatGPT
@@ -40,6 +43,9 @@ sidebar-category:
       - title: Notion
         url: /categories/notion/
         category: notion
+      - title: Obsidian
+        url: /categories/obsidian/
+        category: obsidian
   - title: ETC
     # children:
     # - title: athena

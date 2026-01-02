@@ -9,6 +9,13 @@
 {%- comment %} https://docs.google.com/presentation/d/1rmxwWa9P6_xHqonmh5ONXRS-jPc5XKbnv99Rjkhe04s/present {% endcomment -%}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Favicons -->
+<link rel="icon" type="image/x-icon" href="{{ '/assets/logo.ico/favicon.ico' | relative_url }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/logo.ico/favicon-16x16.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/logo.ico/favicon-32x32.png' | relative_url }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/logo.ico/apple-touch-icon.png' | relative_url }}">
+<link rel="manifest" href="{{ '/assets/logo.ico/site.webmanifest' | relative_url }}">
+
 <script type="text/javascript">
   document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
   {% if site.enable_copy_code_button -%}
@@ -26,3 +33,186 @@
     <script src="{{ script | relative_url }}"></script>
   {% endfor %}
 {% endif %}
+
+<script>
+// Dark mode toggle - 인라인으로 추가하여 빌드 없이 바로 작동
+(function() {
+  'use strict';
+  
+  function updateDarkModeIcon(isDark) {
+    var icon = document.getElementById('dark-mode-icon');
+    if (icon) {
+      if (isDark) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    }
+  }
+
+  function initDarkMode() {
+    // body가 로드되지 않았으면 대기
+    if (!document.body) {
+      setTimeout(initDarkMode, 10);
+      return;
+    }
+    
+    var darkMode = null;
+    try {
+      darkMode = localStorage.getItem('darkMode');
+    } catch (err) {
+      // localStorage 읽기 실패 (조용히 처리)
+    }
+    
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (darkMode === null) {
+      // localStorage에 값이 없으면 시스템 설정 확인
+      if (prefersDark) {
+        document.body.classList.add('dark-mode');
+        updateDarkModeIcon(true);
+      } else {
+        document.body.classList.remove('dark-mode');
+        updateDarkModeIcon(false);
+      }
+    } else if (darkMode === 'true') {
+      document.body.classList.add('dark-mode');
+      updateDarkModeIcon(true);
+    } else {
+      document.body.classList.remove('dark-mode');
+      updateDarkModeIcon(false);
+    }
+  }
+
+  // 다크모드 토글 함수
+  function toggleDarkMode(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    if (!document.body) {
+      return;
+    }
+    
+    var isDark = document.body.classList.contains('dark-mode');
+    var newValue = isDark ? 'false' : 'true';
+    
+    // localStorage 업데이트 (에러 처리 포함)
+    try {
+      localStorage.setItem('darkMode', newValue);
+    } catch (err) {
+      // localStorage 저장 실패 (조용히 처리)
+    }
+    
+    // UI 업데이트
+    if (isDark) {
+      document.body.classList.remove('dark-mode');
+      updateDarkModeIcon(false);
+    } else {
+      document.body.classList.add('dark-mode');
+      updateDarkModeIcon(true);
+    }
+  }
+
+  // 이벤트 위임으로 버튼 클릭 처리 - 가장 먼저 등록
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    
+    // 버튼 자체를 클릭한 경우
+    if (target.classList.contains('dark-mode__toggle')) {
+      toggleDarkMode(e);
+      return;
+    }
+    
+    // 버튼 내부 요소(아이콘, span 등)를 클릭한 경우
+    var toggleButton = target.closest('.dark-mode__toggle');
+    if (toggleButton) {
+      toggleDarkMode(e);
+      return;
+    }
+    
+    // dark-mode-icon을 직접 클릭한 경우
+    if (target.id === 'dark-mode-icon' || target.closest('#dark-mode-icon')) {
+      var btn = target.closest('.dark-mode__toggle') || document.querySelector('.dark-mode__toggle');
+      if (btn) {
+        toggleDarkMode(e);
+      }
+    }
+  }, true); // capture phase에서 먼저 실행
+
+  // 초기화 함수
+  function init() {
+    initDarkMode();
+    
+    // 버튼 클릭 이벤트 직접 등록 (추가 보안)
+    var toggleButton = document.querySelector('.dark-mode__toggle');
+    if (toggleButton) {
+      toggleButton.addEventListener('click', toggleDarkMode);
+    }
+  }
+
+  // DOM이 준비되면 실행
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  
+  // window.onload 후에도 한 번 더 시도
+  window.addEventListener('load', function() {
+    if (!document.body) return;
+    
+    // localStorage에 저장된 값이 있으면 그대로 적용
+    try {
+      var savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') {
+        document.body.classList.add('dark-mode');
+        updateDarkModeIcon(true);
+      } else if (savedDarkMode === 'false') {
+        document.body.classList.remove('dark-mode');
+        updateDarkModeIcon(false);
+      }
+    } catch (err) {
+      // localStorage 읽기 실패 (조용히 처리)
+    }
+    
+    // 버튼 이벤트 재등록
+    var toggleButton = document.querySelector('.dark-mode__toggle');
+    if (toggleButton) {
+      toggleButton.addEventListener('click', toggleDarkMode);
+    }
+  });
+
+  // 시스템 테마 변경 감지
+  if (window.matchMedia) {
+    var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    var handler = function(e) {
+      if (!document.body) return;
+      try {
+        if (localStorage.getItem('darkMode') === null) {
+          if (e.matches) {
+            document.body.classList.add('dark-mode');
+            updateDarkModeIcon(true);
+          } else {
+            document.body.classList.remove('dark-mode');
+            updateDarkModeIcon(false);
+          }
+        }
+      } catch (err) {
+        // 시스템 테마 변경 처리 실패 (조용히 처리)
+      }
+    };
+    
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handler);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(handler);
+    }
+  }
+})();
+</script>
+
+
