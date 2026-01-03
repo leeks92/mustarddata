@@ -344,5 +344,6 @@ git commit -m "Initial commit"
 [^2]: [옵시디언 백링크 가이드](https://help.obsidian.md/How+to/Internal+links) - 백링크와 내부 링크 사용 방법
 [^3]: [옵시디언 플러그인](https://obsidian.md/plugins) - 공식 플러그인 목록 및 커뮤니티 플러그인
 [^4]: [노션 공식 사이트](https://www.notion.so/) - 노션의 공식 웹사이트 및 기능 소개
-[^5]: [마크다운 가이드](https://www.markdownguide.org/) - 마크다운 문법 완전 가이드
+[^5]: [노션 도움말 센터](https://www.notion.com/ko/help) - 노션 사용법 및 기능 가이드
+[^6]: [마크다운 가이드](https://www.markdownguide.org/) - 마크다운 문법 완전 가이드
 

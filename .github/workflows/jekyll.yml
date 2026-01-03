@@ -68,6 +68,10 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install requests library
+        run: |
+          pip install requests
+
       - name: Extract and submit URLs to Naver IndexNow
         run: |
           python3 << 'EOF'
