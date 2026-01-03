@@ -4,7 +4,7 @@ title: "Notion x 쿠캣 세미나 요약"
 # date: 2024-06-01
 # last_modified_at: 2024-06-03T14:02:00
 categories:
-  - notion
+  - tools
 # tags:
 #     - [common]
 # 목차 활성화

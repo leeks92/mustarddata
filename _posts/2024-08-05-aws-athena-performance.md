@@ -4,7 +4,7 @@ title: "[AWS] Athena 데이터 압축, 데이터 파티셔닝 최적화 방법"
 # date: 2024-06-01
 # last_modified_at: 2024-06-03T14:02:00
 categories:
-  - aws
+  - cloud
 # tags:
 #     - [common]
 # 목차 활성화

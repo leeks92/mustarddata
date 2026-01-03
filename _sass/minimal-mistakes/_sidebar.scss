@@ -28,11 +28,12 @@
     }
 
     &.sticky {
-      overflow-y: auto;
-      /* calculate height of nav list
-         viewport height - nav height - masthead x-padding
-      */
-      max-height: calc(100vh - #{$nav-height} - 2em);
+      // 프로필 이미지가 항상 보이도록 overflow 제거
+      // 사이드바 자체는 스크롤하지 않고, 내부 네비게이션만 스크롤되도록
+      overflow: visible !important;
+      overflow-y: visible !important;
+      max-height: none !important;
+      height: auto !important;
     }
   }
 

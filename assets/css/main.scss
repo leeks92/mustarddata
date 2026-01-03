@@ -376,6 +376,7 @@ body {
     padding-top: 0 !important;
     // Float 정렬: 상단 정렬 강제
     vertical-align: top !important;
+    // sticky가 아닌 경우에만 relative 적용
     position: relative;
     top: 0 !important;
     // 추가: 사이드바가 본문 위치에 영향을 주지 않도록 높이 제한
@@ -638,53 +639,141 @@ body {
 }
 
 // 프로필 이미지 중앙 정렬 - 강제 표시
-.sidebar {
-  .h-card {
+// 원본 테마의 sticky 설정을 완전히 오버라이드
+// 더 구체적인 선택자로 우선순위 확보
+.sidebar.sticky {
+  @include breakpoint($large) {
+    // 사이드바가 스크롤할 때 따라오도록 sticky 설정
+    position: sticky !important;
+    top: 2em !important;
+    align-self: flex-start !important;
+    // 사이드바 자체는 스크롤하지 않도록 설정
+    overflow: visible !important;
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    // 사이드바가 컨텐츠 높이에 맞춰 자동으로 늘어나도록
+    min-height: auto !important;
+  }
+}
+
+// 프로필 이미지도 사이드바와 함께 스크롤되도록 설정
+.sidebar.sticky .h-card {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: auto !important;
+  height: auto !important;
+  
+  @include breakpoint($large) {
+    // 프로필도 사이드바와 함께 스크롤되도록 sticky 제거
+    position: relative !important;
+    // 배경색 제거 (다크모드에서 배경색이 생기지 않도록)
+    background-color: transparent !important;
+    background: transparent !important;
+    z-index: 10 !important;
+    padding-bottom: 1em !important;
+    margin-bottom: 1em !important;
+    // 프로필이 잘리지 않도록
+    overflow: visible !important;
+    // 프로필이 항상 보이도록
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+// 더 구체적인 선택자로 프로필 이미지 강제 표시
+// 모든 가능한 선택자 조합으로 프로필 이미지가 보이도록 보장
+.sidebar.sticky .h-card .author__avatar,
+.sidebar .h-card .author__avatar,
+.sidebar .author__avatar,
+.author__avatar {
+  @include breakpoint($large) {
+    text-align: center !important;
     display: block !important;
+    width: auto !important;
+    margin: 0 auto !important;
     visibility: visible !important;
     opacity: 1 !important;
     min-height: auto !important;
     height: auto !important;
-  }
+    // 모든 숨김 속성 제거
+    clip: auto !important;
+    clip-path: none !important;
+    position: relative !important;
 
-  .author__avatar {
-    @include breakpoint($large) {
-      text-align: center !important;
-      display: block !important;
-      width: auto !important;
+    a {
+      display: inline-block !important;
       margin: 0 auto !important;
       visibility: visible !important;
       opacity: 1 !important;
-      min-height: auto !important;
-      height: auto !important;
-
-      a {
-        display: inline-block !important;
-        margin: 0 auto !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-
-      img {
-        margin: 0 auto !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        max-width: 110px !important;
-        width: auto !important;
-        height: auto !important;
-        min-height: 110px !important;
-        min-width: 110px !important;
-      }
+      // 링크가 보이도록
+      text-decoration: none !important;
     }
-  }
 
-  .author__content {
-    @include breakpoint($large) {
-      text-align: center !important;
+    img {
+      margin: 0 auto !important;
       display: block !important;
       visibility: visible !important;
+      opacity: 1 !important;
+      max-width: 110px !important;
+      width: auto !important;
+      height: auto !important;
+      min-height: 110px !important;
+      min-width: 110px !important;
+      // 이미지가 보이도록
+      clip: auto !important;
+      clip-path: none !important;
+      position: relative !important;
     }
+  }
+}
+
+.sidebar .author__content {
+  @include breakpoint($large) {
+    text-align: center !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
+// 네비게이션 메뉴도 사이드바와 함께 스크롤되도록 설정
+.sidebar.sticky .nav__list,
+.sidebar .nav__list {
+  @include breakpoint($large) {
+    margin-top: 1em !important;
+    // 네비게이션 메뉴도 사이드바와 함께 스크롤되도록 높이 제한 제거
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+  }
+}
+
+// 프로필 이미지도 사이드바와 함께 스크롤되도록 설정
+.sidebar.sticky > .h-card:first-child {
+  @include breakpoint($large) {
+    // 프로필도 사이드바와 함께 스크롤되도록 sticky 제거
+    position: relative !important;
+    z-index: 100 !important;
+    // 배경색 제거 (다크모드에서 배경색이 생기지 않도록)
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 1em 0 !important;
+    margin-bottom: 1em !important;
+    // 프로필이 항상 보이도록
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+// 프로필 다음 요소들(네비게이션)이 프로필 아래에 위치하도록
+.sidebar.sticky > .h-card:first-child ~ * {
+  @include breakpoint($large) {
+    // 프로필 아래에 정상적으로 배치되도록
+    position: relative !important;
+    z-index: 1 !important;
   }
 }
 
@@ -888,6 +977,18 @@ body.dark-mode {
         color: #eaeaea !important;
         display: flex !important;
         align-items: center !important;
+      }
+    }
+  }
+
+  .page__title {
+    color: #eaeaea !important;
+
+    a {
+      color: #eaeaea !important;
+
+      &:hover {
+        color: mix(#00adb5, #eaeaea, 40%) !important;
       }
     }
   }

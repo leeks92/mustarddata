@@ -35,10 +35,22 @@
             {% endfor %}
           </ul>
         {% else %}
+          {% comment %}
+            최상위 카테고리(children이 없는 경우)에도 포스트 개수 표시
+          {% endcomment %}
+          {% assign post_cnt = 0 %}
+          {% if nav.category %}
+            {% for category in site.categories %}
+              {% if category[0] == nav.category %}
+                {% assign post_cnt = category[1].size %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          
           {% if nav.url %}
-            <a href="{{ nav.url | relative_url }}"><span class="nav__sub-title">{{ nav.title }}</span></a>
+            <a href="{{ nav.url | relative_url }}"><span class="nav__sub-title">{{ nav.title }}{% if post_cnt > 0 %} ({{ post_cnt }}){% endif %}</span></a>
           {% else %}
-            <span class="nav__sub-title">{{ nav.title }}</span>
+            <span class="nav__sub-title">{{ nav.title }}{% if post_cnt > 0 %} ({{ post_cnt }}){% endif %}</span>
           {% endif %}
         {% endif %}
       </li>

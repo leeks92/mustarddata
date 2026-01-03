@@ -4,7 +4,7 @@ title: "Airflow란 무엇이며 언제 어디에 왜 사용하는지에 대하�
 # date: 2024-06-01
 # last_modified_at: 2024-06-03T14:02:00
 categories:
-  - airflow
+  - tools
 # tags:
 #     - [common]
 # 목차 활성화

@@ -10,42 +10,20 @@ sidebar-category:
     url: /categories/backend/
     category: backend
   - title: DATA
-    children:
-      - title: Database
-        url: /categories/database/
-        category: database
+    url: /categories/data/
+    category: data
   - title: Cloud
-    children:
-      - title: AWS
-        url: /categories/aws/
-        category: aws
+    url: /categories/cloud/
+    category: cloud
   - title: AI
-    children:
-      - title: Cursor AI
-        url: /categories/ai/
-        category: ai
-      - title: MCP
-        url: /categories/mcp/
-        category: mcp
-  - title: Knowledge
-    children:
-      - title: ChatGPT
-        url: /categories/chatgpt/
-        category: chatgpt
-      - title: SEO
-        url: /categories/seo/
-        category: seo
+    url: /categories/ai/
+    category: ai
+  - title: SEO
+    url: /categories/seo/
+    category: seo
   - title: Tools
-    children:
-      - title: Airflow
-        url: /categories/airflow/
-        category: airflow
-      - title: Notion
-        url: /categories/notion/
-        category: notion
-      - title: Obsidian
-        url: /categories/obsidian/
-        category: obsidian
+    url: /categories/tools/
+    category: tools
   - title: ETC
     # children:
     # - title: athena

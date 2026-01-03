@@ -1,12 +1,24 @@
-{% assign author = page.author | default: page.authors[0] | default: site.author %}
-{% assign author = site.data.authors[author] | default: author %}
+{% comment %}
+  author 객체 설정:
+  1. page.author가 있으면 site.data.authors에서 찾기
+  2. 없으면 site.author 사용
+  3. site.data.authors가 없거나 찾지 못하면 site.author 사용
+{% endcomment %}
+{% assign author_key = page.author | default: page.authors[0] | default: nil %}
+{% if author_key and site.data.authors and site.data.authors[author_key] %}
+  {% assign author = site.data.authors[author_key] %}
+{% else %}
+  {% assign author = site.author %}
+{% endif %}
 
 <div itemscope itemtype="https://schema.org/Person" class="h-card">
 
-  {% if author.avatar %}
+  {% comment %} author.avatar가 없으면 site.author.avatar 사용 {% endcomment %}
+  {% assign avatar_url = author.avatar | default: site.author.avatar %}
+  {% if avatar_url %}
     <div class="author__avatar">
-      <a href="{{ author.home | default: '/' | absolute_url }}">
-        <img src="{{ author.avatar | relative_url }}" alt="{{ author.name }}" itemprop="image" class="u-photo">
+      <a href="{{ author.home | default: site.author.home | default: '/' | absolute_url }}">
+        <img src="{{ avatar_url | relative_url }}" alt="{{ author.name | default: site.author.name }}" itemprop="image" class="u-photo">
       </a>
     </div>
   {% endif %}
