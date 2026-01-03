@@ -206,7 +206,7 @@ jobs:
   submit-to-google-indexing:
     runs-on: ubuntu-latest
     needs: deploy
-    if: github.event_name == 'push' && github.event.head_commit.message != '' && secrets.GOOGLE_SERVICE_ACCOUNT_JSON != ''
+    if: github.event_name == 'push' && github.event.head_commit.message != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -299,9 +299,16 @@ jobs:
               exit(0)
 
           # Google Indexing API 인증
-          service_account_info = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_JSON', '{}'))
-          if not service_account_info:
-              print("⚠️  GOOGLE_SERVICE_ACCOUNT_JSON is not set")
+          service_account_json = os.environ.get('GOOGLE_SERVICE_ACCOUNT_JSON')
+          if not service_account_json:
+              print("⚠️  GOOGLE_SERVICE_ACCOUNT_JSON secret is not set")
+              print("💡 Please set GOOGLE_SERVICE_ACCOUNT_JSON in GitHub Secrets")
+              exit(0)  # 실패하지 않고 경고만 출력
+
+          try:
+              service_account_info = json.loads(service_account_json)
+          except json.JSONDecodeError as e:
+              print(f"❌ Invalid JSON format in GOOGLE_SERVICE_ACCOUNT_JSON: {e}")
               exit(0)
 
           credentials = service_account.Credentials.from_service_account_info(
