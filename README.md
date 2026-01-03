@@ -374,6 +374,81 @@ ORDER BY year, month;
 - 이미지 압축 및 최적화
 - 불필요한 플러그인 제거
 
+### 🔄 검색 엔진 자동화
+
+새 포스트가 배포될 때 네이버 서치어드바이저와 구글 서치콘솔에 자동으로 제출되도록 설정할 수 있습니다.
+
+#### 네이버 IndexNow 설정
+
+1. **GitHub Secrets 설정**:
+   - GitHub 저장소 → **Settings** → **Secrets and variables** → **Actions**
+   - **New repository secret** 클릭
+   - **Name**: `NAVER_INDEXNOW_KEY`
+   - **Value**: `38542124923295f429c9abb54e344d2d`
+   - **Add secret** 클릭
+
+2. **키 파일 확인**:
+   - 프로젝트 루트에 `38542124923295f429c9abb54e344d2d.txt` 파일이 생성되어 있습니다
+   - 배포 후 `https://mustarddata.com/38542124923295f429c9abb54e344d2d.txt`에서 접근 가능합니다
+
+#### Google Search Console Indexing API 설정 (선택사항)
+
+1. **Search Console에 서비스 계정 추가**:
+   - [Google Search Console](https://search.google.com/search-console) 접속
+   - 속성 선택 (mustarddata.com)
+   - **설정** → **사용자 및 권한** → **사용자 추가**
+   - 이메일 주소 입력: `mustarddata@mustarddata.iam.gserviceaccount.com`
+   - **소유자** 권한 선택 → **추가**
+
+2. **GitHub Secrets 설정**:
+   - GitHub 저장소 → **Settings** → **Secrets and variables** → **Actions**
+   - **New repository secret** 클릭
+   - **Name**: `GOOGLE_SERVICE_ACCOUNT_JSON`
+   - **Value**: 서비스 계정 JSON 파일 전체 내용 (한 줄로)
+   - **Add secret** 클릭
+
+#### 자동화 작동 방식
+
+- 새 포스트를 작성하고 커밋하면 GitHub Actions가 자동 실행됩니다
+- 변경된 포스트 파일에서 URL을 추출하여 검색 엔진에 제출합니다
+- 네이버 IndexNow와 Google Indexing API에 동시에 제출됩니다
+
+#### 로그 확인 방법
+
+제출 결과는 GitHub Actions 로그에서 확인할 수 있습니다:
+
+1. **GitHub 저장소** → **Actions** 탭 이동
+2. 최신 워크플로우 실행 클릭
+3. `submit-to-naver-indexnow` 또는 `submit-to-google-indexing` job 클릭
+4. 로그에서 다음 정보 확인:
+   - 📝 변경된 포스트 파일 수
+   - ✅ 추출된 URL 목록
+   - 📊 API 응답 상태 코드
+   - ✅ 성공/실패 여부
+
+**로그 예시**:
+```
+📝 Found 1 changed post(s)
+✅ Found URL: https://mustarddata.com/ai/cursor-ai-browser-guide/
+🚀 Submitting 1 URL(s) to Naver IndexNow...
+📊 Status Code: 200
+✅ Successfully submitted to Naver IndexNow
+```
+
+#### 문제 해결
+
+**네이버 IndexNow 오류**:
+- **403 Forbidden**: 키 파일이 올바르게 배포되었는지 확인
+- **422 Unprocessable Entity**: URL 형식 확인 (`https://mustarddata.com/{category}/{title}/`)
+
+**Google Indexing API 오류**:
+- **403 Forbidden**: Search Console에 서비스 계정이 소유자로 추가되었는지 확인
+- **인증 오류**: JSON이 한 줄로 올바르게 입력되었는지 확인
+
+**참고 자료**:
+- [네이버 IndexNow 가이드](https://searchadvisor.naver.com/guide/indexnow-api-key)
+- [Google Indexing API 문서](https://developers.google.com/search/apis/indexing-api/v3/using-api)
+
 ---
 
 ## 🎯 애드센스 최적화 가이드

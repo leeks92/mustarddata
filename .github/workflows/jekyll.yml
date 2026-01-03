@@ -52,3 +52,286 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+  # 네이버 IndexNow 자동 제출
+  submit-to-naver-indexnow:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.event_name == 'push' && github.event.head_commit.message != ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # 이전 커밋과 비교하기 위해
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Extract and submit URLs to Naver IndexNow
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import subprocess
+          import re
+          import requests
+          from pathlib import Path
+
+          # 변경된 포스트 파일 찾기
+          before_sha = os.environ.get('GITHUB_BEFORE', 'HEAD~1')
+          after_sha = os.environ.get('GITHUB_AFTER', 'HEAD')
+
+          try:
+              result = subprocess.run(
+                  ['git', 'diff', '--name-only', before_sha, after_sha],
+                  capture_output=True,
+                  text=True,
+                  check=True
+              )
+          except subprocess.CalledProcessError:
+              # 첫 커밋인 경우 빈 결과 처리
+              result = subprocess.run(
+                  ['git', 'ls-files', '_posts/'],
+                  capture_output=True,
+                  text=True
+              )
+
+          changed_posts = [f for f in result.stdout.split('\n') if f.strip().startswith('_posts/') and f.strip().endswith('.md')]
+
+          if not changed_posts:
+              print("ℹ️  No changed posts found")
+              exit(0)
+
+          print(f"📝 Found {len(changed_posts)} changed post(s)")
+
+          urls = []
+          for post_file in changed_posts:
+              post_file = post_file.strip()
+              if not post_file:
+                  continue
+
+              post_path = Path(post_file)
+              if not post_path.exists():
+                  print(f"⚠️  File not found: {post_file}")
+                  continue
+
+              try:
+                  # Front matter에서 카테고리 추출
+                  with open(post_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+
+                  # 카테고리 추출
+                  category_match = re.search(r'^categories:\s*(.+)$', content, re.MULTILINE)
+                  if category_match:
+                      category_raw = category_match.group(1).strip().strip('[]').strip('"').strip("'")
+                      # 첫 번째 카테고리만 사용
+                      category = category_raw.split('/')[0].split(',')[0].strip()
+                  else:
+                      print(f"⚠️  No category found in {post_file}")
+                      continue
+
+                  # 제목 추출 (파일명에서 날짜 제거)
+                  title = post_path.stem
+                  title = re.sub(r'^\d{4}-\d{2}-\d{2}-', '', title)
+
+                  if not category or not title:
+                      print(f"⚠️  Invalid category or title in {post_file}")
+                      continue
+
+                  url = f"https://mustarddata.com/{category}/{title}/"
+                  urls.append(url)
+                  print(f"✅ Found URL: {url}")
+
+              except Exception as e:
+                  print(f"❌ Error processing {post_file}: {e}")
+                  continue
+
+          if not urls:
+              print("⚠️  No valid URLs found")
+              exit(0)
+
+          # 네이버 IndexNow API 호출
+          key = os.environ.get('NAVER_INDEXNOW_KEY')
+          if not key:
+              print("❌ NAVER_INDEXNOW_KEY secret is not set")
+              print("💡 Please set NAVER_INDEXNOW_KEY in GitHub Secrets")
+              exit(0)  # 실패하지 않고 경고만 출력
+
+          payload = {
+              "host": "mustarddata.com",
+              "key": key,
+              "keyLocation": f"https://mustarddata.com/{key}.txt",
+              "urlList": urls
+          }
+
+          print(f"\n🚀 Submitting {len(urls)} URL(s) to Naver IndexNow...")
+          print(f"📋 URLs: {json.dumps(urls, indent=2, ensure_ascii=False)}")
+
+          try:
+              response = requests.post(
+                  "https://searchadvisor.naver.com/indexnow",
+                  json=payload,
+                  headers={"Content-Type": "application/json; charset=utf-8"},
+                  timeout=30
+              )
+
+              print(f"\n📊 Status Code: {response.status_code}")
+
+              if response.status_code == 200:
+                  print("✅ Successfully submitted to Naver IndexNow")
+              elif response.status_code == 202:
+                  print("✅ Accepted - Naver is verifying the key")
+              elif response.status_code == 403:
+                  print("❌ Forbidden - Key is invalid. Please check your key file.")
+              elif response.status_code == 422:
+                  print("❌ Unprocessable Entity - URL doesn't match key domain")
+              elif response.status_code == 429:
+                  print("⚠️  Too Many Requests - Please wait before next submission")
+              else:
+                  print(f"⚠️  Unexpected response: {response.text}")
+
+          except requests.exceptions.RequestException as e:
+              print(f"❌ Request failed: {e}")
+              exit(1)
+          EOF
+        env:
+          NAVER_INDEXNOW_KEY: ${{ secrets.NAVER_INDEXNOW_KEY }}
+          GITHUB_BEFORE: ${{ github.event.before }}
+          GITHUB_AFTER: ${{ github.event.after }}
+
+  # Google Search Console Indexing API 자동 제출 (선택사항)
+  # 사용하려면 Google Cloud Console에서 서비스 계정을 생성하고
+  # Search Console에 소유자로 추가한 후, JSON 키를 GitHub Secrets에 등록해야 합니다.
+  submit-to-google-indexing:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.event_name == 'push' && github.event.head_commit.message != '' && secrets.GOOGLE_SERVICE_ACCOUNT_JSON != ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Google API libraries
+        run: |
+          pip install google-api-python-client google-auth-httplib2 google-auth
+
+      - name: Extract and submit URLs to Google Indexing API
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import subprocess
+          import re
+          from pathlib import Path
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+
+          # 변경된 포스트 파일 찾기
+          before_sha = os.environ.get('GITHUB_BEFORE', 'HEAD~1')
+          after_sha = os.environ.get('GITHUB_AFTER', 'HEAD')
+
+          try:
+              result = subprocess.run(
+                  ['git', 'diff', '--name-only', before_sha, after_sha],
+                  capture_output=True,
+                  text=True,
+                  check=True
+              )
+          except subprocess.CalledProcessError:
+              result = subprocess.run(
+                  ['git', 'ls-files', '_posts/'],
+                  capture_output=True,
+                  text=True
+              )
+
+          changed_posts = [f for f in result.stdout.split('\n') if f.strip().startswith('_posts/') and f.strip().endswith('.md')]
+
+          if not changed_posts:
+              print("ℹ️  No changed posts found")
+              exit(0)
+
+          print(f"📝 Found {len(changed_posts)} changed post(s)")
+
+          urls = []
+          for post_file in changed_posts:
+              post_file = post_file.strip()
+              if not post_file:
+                  continue
+
+              post_path = Path(post_file)
+              if not post_path.exists():
+                  continue
+
+              try:
+                  with open(post_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+
+                  category_match = re.search(r'^categories:\s*(.+)$', content, re.MULTILINE)
+                  if category_match:
+                      category_raw = category_match.group(1).strip().strip('[]').strip('"').strip("'")
+                      category = category_raw.split('/')[0].split(',')[0].strip()
+                  else:
+                      continue
+
+                  title = post_path.stem
+                  title = re.sub(r'^\d{4}-\d{2}-\d{2}-', '', title)
+
+                  if not category or not title:
+                      continue
+
+                  url = f"https://mustarddata.com/{category}/{title}/"
+                  urls.append(url)
+                  print(f"✅ Found URL: {url}")
+
+              except Exception as e:
+                  print(f"❌ Error processing {post_file}: {e}")
+                  continue
+
+          if not urls:
+              print("⚠️  No valid URLs found")
+              exit(0)
+
+          # Google Indexing API 인증
+          service_account_info = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_JSON', '{}'))
+          if not service_account_info:
+              print("⚠️  GOOGLE_SERVICE_ACCOUNT_JSON is not set")
+              exit(0)
+
+          credentials = service_account.Credentials.from_service_account_info(
+              service_account_info,
+              scopes=['https://www.googleapis.com/auth/indexing']
+          )
+
+          service = build('indexing', 'v3', credentials=credentials)
+
+          print(f"\n🚀 Submitting {len(urls)} URL(s) to Google Indexing API...")
+
+          success_count = 0
+          for url in urls:
+              try:
+                  request_body = {
+                      'url': url,
+                      'type': 'URL_UPDATED'
+                  }
+
+                  response = service.urlNotifications().publish(body=request_body).execute()
+                  print(f"✅ Submitted: {url}")
+                  success_count += 1
+
+              except Exception as e:
+                  print(f"❌ Failed to submit {url}: {e}")
+
+          print(f"\n📊 Successfully submitted {success_count}/{len(urls)} URL(s)")
+          EOF
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GITHUB_BEFORE: ${{ github.event.before }}
+          GITHUB_AFTER: ${{ github.event.after }}
+
