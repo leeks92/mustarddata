@@ -206,25 +206,27 @@ paginate: 10 # 기본값 5 amount of posts to show
 paginate_path: /page:num/
 
 # Pagination with jekyll-paginate-v2
+# 현재는 jekyll-paginate를 사용 중이므로 아래 설정은 비활성화됨
+# jekyll-paginate-v2를 사용하려면 enabled: true로 설정하고
 # See https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-GENERATOR.md#site-configuration
 #   for configuration details
-pagination:
-  # Set enabled to true to use paginate v2
-  # enabled: true
-  debug: false
-  collection: 'posts'
-  per_page: 10
-  permalink: '/page/:num/'
-  title: ':title - page :num'
-  limit: 0
-  sort_field: 'date'
-  sort_reverse: true
-  category: 'posts'
-  tag: ''
-  locale: ''
-  trail:
-    before: 2
-    after: 2
+# pagination:
+#   # Set enabled to true to use paginate v2
+#   # enabled: true
+#   debug: false
+#   collection: 'posts'
+#   per_page: 10
+#   permalink: '/page/:num/'
+#   title: ':title - page :num'
+#   limit: 0
+#   sort_field: 'date'
+#   sort_reverse: true
+#   category: 'posts'
+#   tag: ''
+#   locale: ''
+#   trail:
+#     before: 2
+#     after: 2
 
 
 # Plugins (previously gems:)
@@ -247,7 +249,7 @@ whitelist:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
-  - jekyll-feed
+  # jekyll-feed는 비활성화되어 있으므로 제거
   - jekyll-include-cache
 
 

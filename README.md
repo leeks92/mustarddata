@@ -12,14 +12,14 @@
 - **테마**: Minimal Mistakes
 - **호스팅**: GitHub Pages
 - **분석**: Google Analytics
-- **댓글**: Disqus
+- **댓글**: Giscus (GitHub Discussions 기반)
 - **스타일링**: SCSS
 
 ### ✨ 주요 특징
 - 📱 완전한 반응형 디자인
 - 🔍 SEO 최적화 완료
 - 📊 Google Analytics 연동
-- 💬 댓글 시스템 (Disqus)
+- 💬 댓글 시스템 (Giscus)
 - 🏷️ 카테고리별 콘텐츠 분류
 - 📄 법적 고지 페이지 완비 (개인정보처리방침, 이용약관)
 
@@ -35,7 +35,7 @@
 ### 로컬 실행
 ```bash
 # 저장소 클론
-git clone https://github.com/your-username/mustarddata.git
+git clone https://github.com/leeks92/mustarddata.git
 cd mustarddata
 
 # 의존성 설치
@@ -449,7 +449,7 @@ ORDER BY year, month;
 ## 📧 연락처
 
 - **블로그**: [https://mustarddata.com](https://mustarddata.com)
-- **GitHub**: [@LifeIsBelieveful](https://github.com/LifeIsBelieveful)
+- **GitHub**: [@leeks92](https://github.com/leeks92)
 - **이메일**: [연락처 페이지](/contact/) 참조
 
 ---
