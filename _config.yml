@@ -35,18 +35,6 @@ copyright                : "Daniel" # "copyright" name, defaults to site.title
 copyright_url            : "https://mustarddata.com" # "copyright" URL, defaults to site.url
 comments:
   provider               : "giscus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
-  disqus:
-    shortname            : "danielnote" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
-  discourse:
-    server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
-  facebook:
-    # https://developers.facebook.com/docs/plugins/comments
-    appid                :
-    num_posts            : # 5 (default)
-    colorscheme          : # "light" (default), "dark"
-  utterances:
-    theme                : # "github-light" (default), "github-dark"
-    issue_term           : # "pathname" (default)
   giscus:
     repo_id              : "R_kgDOL_aAzQ" # Giscus 설정에서 확인: https://giscus.app
     category_name        : "Comments" # Discussions 카테고리 이름
@@ -59,12 +47,6 @@ comments:
     emit_metadata        : 0 # 1 for enabled, 0 for disabled (default) # https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#imetadatamessage
     lang                 : "ko" # "en" (default), "ko" for Korean
     lazy                 : false # true, false # Loading of the comments will be deferred until the user scrolls near the comments container.
-  staticman:
-    branch               : # "master"
-    endpoint             : # "https://{your Staticman v3 API}/v3/entry/github/"
-reCaptcha:
-  siteKey                :
-  secret                 :
 # RSS feed는 커스텀 /rss/ 경로를 사용합니다
 search                   : true # true, false (default)
 search_full_content      : # true, false (default)

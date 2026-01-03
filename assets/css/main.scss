@@ -406,7 +406,7 @@ body {
     height: auto !important;
   }
 
-  // 프로필 이미지가 있는 경우 예외 처리 - 가장 높은 우선순위
+  // 프로필 이미지가 있는 경우 예외 처리
   > .h-card {
     margin-top: 0 !important;
     padding-top: 0 !important;
@@ -415,32 +415,6 @@ body {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-
-    .author__avatar {
-      min-height: auto !important;
-      height: auto !important;
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      width: auto !important;
-
-      a {
-        display: inline-block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-
-      img {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        max-width: 110px !important;
-        width: auto !important;
-        height: auto !important;
-        min-height: 110px !important;
-        min-width: 110px !important;
-      }
-    }
   }
 
   // 모든 자식 요소의 상단 여백 제거 (h-card 제외)
@@ -638,9 +612,7 @@ body {
   }
 }
 
-// 프로필 이미지 중앙 정렬 - 강제 표시
-// 원본 테마의 sticky 설정을 완전히 오버라이드
-// 더 구체적인 선택자로 우선순위 확보
+// 사이드바 sticky 설정
 .sidebar.sticky {
   @include breakpoint($large) {
     // 사이드바가 스크롤할 때 따라오도록 sticky 설정
@@ -649,8 +621,6 @@ body {
     align-self: flex-start !important;
     // 사이드바 자체는 스크롤하지 않도록 설정
     overflow: visible !important;
-    overflow-y: visible !important;
-    overflow-x: visible !important;
     max-height: none !important;
     height: auto !important;
     // 사이드바가 컨텐츠 높이에 맞춰 자동으로 늘어나도록
@@ -659,7 +629,8 @@ body {
 }
 
 // 프로필 이미지도 사이드바와 함께 스크롤되도록 설정
-.sidebar.sticky .h-card {
+.sidebar.sticky .h-card,
+.sidebar.sticky > .h-card:first-child {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -670,22 +641,18 @@ body {
     // 프로필도 사이드바와 함께 스크롤되도록 sticky 제거
     position: relative !important;
     // 배경색 제거 (다크모드에서 배경색이 생기지 않도록)
-    background-color: transparent !important;
     background: transparent !important;
-    z-index: 10 !important;
-    padding-bottom: 1em !important;
+    z-index: 100 !important;
+    padding: 1em 0 !important;
     margin-bottom: 1em !important;
-    // 프로필이 잘리지 않도록
-    overflow: visible !important;
-    // 프로필이 항상 보이도록
     margin-top: 0 !important;
     padding-top: 0 !important;
+    // 프로필이 잘리지 않도록
+    overflow: visible !important;
   }
 }
 
-// 더 구체적인 선택자로 프로필 이미지 강제 표시
-// 모든 가능한 선택자 조합으로 프로필 이미지가 보이도록 보장
-.sidebar.sticky .h-card .author__avatar,
+// 프로필 아바타 이미지 스타일
 .sidebar .h-card .author__avatar,
 .sidebar .author__avatar,
 .author__avatar {
@@ -750,23 +717,6 @@ body {
   }
 }
 
-// 프로필 이미지도 사이드바와 함께 스크롤되도록 설정
-.sidebar.sticky > .h-card:first-child {
-  @include breakpoint($large) {
-    // 프로필도 사이드바와 함께 스크롤되도록 sticky 제거
-    position: relative !important;
-    z-index: 100 !important;
-    // 배경색 제거 (다크모드에서 배경색이 생기지 않도록)
-    background: transparent !important;
-    background-color: transparent !important;
-    padding: 1em 0 !important;
-    margin-bottom: 1em !important;
-    // 프로필이 항상 보이도록
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-}
 
 // 프로필 다음 요소들(네비게이션)이 프로필 아래에 위치하도록
 .sidebar.sticky > .h-card:first-child ~ * {
