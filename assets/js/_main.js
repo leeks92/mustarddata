@@ -183,6 +183,116 @@ $(document).ready(function () {
       });
   }
 
+  // Permalink copy functionality for archive pages
+  document.querySelectorAll('a[rel="permalink"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      // Ctrl/Cmd + Click은 기본 동작 유지 (새 탭에서 열기)
+      if (e.ctrlKey || e.metaKey) {
+        return;
+      }
+      
+      e.preventDefault();
+      e.stopPropagation();
+      
+      var url = this.href;
+      // relative URL을 absolute URL로 변환
+      if (url.startsWith('/')) {
+        url = window.location.origin + url;
+      }
+      
+      copyUrlToClipboard(url, link);
+    });
+  });
+
+  // Permalink copy functionality for page title
+  var pageTitle = document.querySelector('h1.page__title');
+  if (pageTitle) {
+    var titleLink = pageTitle.querySelector('a');
+    if (titleLink) {
+      // 페이지 제목 옆에 복사 버튼 추가
+      var copyButton = document.createElement('button');
+      copyButton.className = 'page-title-copy-button';
+      copyButton.title = 'Copy page URL to clipboard';
+      copyButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
+      copyButton.style.cssText = 'margin-left: 0.5em; background: none; border: none; color: inherit; cursor: pointer; opacity: 0.6; font-size: 0.8em; vertical-align: middle;';
+      copyButton.addEventListener('mouseenter', function() {
+        this.style.opacity = '1';
+      });
+      copyButton.addEventListener('mouseleave', function() {
+        this.style.opacity = '0.6';
+      });
+      copyButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var url = titleLink.href;
+        if (url.startsWith('/')) {
+          url = window.location.origin + url;
+        }
+        copyUrlToClipboard(url, copyButton);
+      });
+      pageTitle.appendChild(copyButton);
+    }
+  }
+
+  // URL 복사 헬퍼 함수
+  function copyUrlToClipboard(url, element) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function() {
+        showCopyFeedback(element);
+      }).catch(function(err) {
+        console.error('Failed to copy URL:', err);
+      });
+    } else {
+      // Fallback for older browsers
+      var textarea = document.createElement('textarea');
+      textarea.value = url;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopyFeedback(element);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+      document.body.removeChild(textarea);
+    }
+  }
+
+  // 복사 완료 피드백 표시
+  function showCopyFeedback(element) {
+    var icon = element.querySelector('i');
+    if (icon) {
+      var originalIconClass = icon.className;
+      icon.className = 'fas fa-check';
+      element.title = 'Copied!';
+      if (element.style) {
+        element.style.color = '#4caf50';
+      }
+      setTimeout(function() {
+        icon.className = originalIconClass;
+        element.title = element.getAttribute('data-original-title') || 'Copy link';
+        if (element.style) {
+          element.style.color = '';
+        }
+      }, 1500);
+    } else {
+      // 아이콘이 없는 경우 (텍스트 링크)
+      var originalText = element.textContent;
+      element.textContent = 'Copied!';
+      if (element.style) {
+        element.style.color = '#4caf50';
+      }
+      setTimeout(function() {
+        element.textContent = originalText;
+        if (element.style) {
+          element.style.color = '';
+        }
+      }, 1500);
+    }
+  }
+
   // Add copy button for <pre> blocks
   var copyText = function (text) {
     if (document.queryCommandEnabled("copy") && navigator.clipboard) {
