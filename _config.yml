@@ -92,6 +92,9 @@ analytics:
     tracking_id          : "G-D4WFQBT2PZ"
     anonymize_ip         : # true, false (default)
 
+# Google AdSense
+adsense:
+  publisher_id          : "ca-pub-3224638013189545"
 
 # Site Author
 author:
