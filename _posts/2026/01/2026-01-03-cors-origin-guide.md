@@ -15,6 +15,8 @@ excerpt: "CORS와 Origin의 개념부터 실제 해결 방법까지, 웹 개발�
 toc: true
 toc_sticky: true
 toc_label: "목차"
+related_posts:
+  - 2026-01-04-dns-records-guide.md
 ---
 
 ## 들어가며

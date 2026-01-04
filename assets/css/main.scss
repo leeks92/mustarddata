@@ -1131,6 +1131,43 @@ body.dark-mode {
     }
   }
 
+  // 다크 모드에서 페이지네이션 중앙 정렬 및 선택된 페이지 색상
+  .pagination {
+    float: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+
+    ul {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      margin: 0 auto !important;
+    }
+
+    li {
+      float: none !important;
+      display: inline-block !important;
+      margin: 0 2px !important;
+
+      a {
+        &.current,
+        &.current.disabled {
+          color: #fff !important;
+          background: #6f777d !important; // 회색 계열로 변경 (빨간색 대신)
+          border-color: #6f777d !important;
+        }
+
+        &:hover:not(.disabled):not(.current) {
+          color: mix(#00adb5, #eaeaea, 40%) !important;
+          background: mix(#000, #252a34, 25%) !important;
+        }
+      }
+    }
+  }
+
   .archive__item {
     border-bottom-color: mix(#fff, #252a34, 20%);
   }
@@ -1230,4 +1267,45 @@ body.dark-mode {
 // 본문 하단 카테고리 섹션 숨기기
 .page__taxonomy {
   display: none !important;
+}
+
+// 페이지네이션 중앙 정렬 및 선택된 페이지 색상 변경
+.pagination {
+  float: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  ul {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    list-style: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+
+  li {
+    float: none !important;
+    display: inline-block !important;
+    margin: 0 2px !important;
+
+    a {
+      &.current,
+      &.current.disabled {
+        color: #fff !important;
+        background: #6f777d !important; // 회색 계열로 변경 (빨간색 대신)
+        border-color: #6f777d !important;
+      }
+
+      &:hover:not(.disabled):not(.current) {
+        color: $link-color-hover !important;
+        background: mix(#fff, $background-color, 10%) !important;
+      }
+    }
+  }
 }

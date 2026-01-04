@@ -16,6 +16,9 @@ excerpt: "Cursor AI의 Rules 기능을 완벽하게 이해하고 활용하는 �
 toc: true
 toc_sticky: true
 toc_label: "목차"
+related_posts:
+  - 2026-01-03-cursor-ai-browser-guide.md
+  - 2026-01-03-cursor-ai-parallel-agents-guide.md
 ---
 
 ## 들어가며

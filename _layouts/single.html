@@ -62,10 +62,16 @@ layout: default
   </article>
 
   {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
-  {% if page.id and page.related and site.related_posts.size > 0 %}
-    {% include page__related.html posts=site.related_posts %}
-  {% comment %}<!-- otherwise show recent posts if no related when `related: true` -->{% endcomment %}
-  {% elsif page.id and page.related %}
-    {% include page__related.html posts=site.posts %}
+  {% if page.id and page.related %}
+    {% comment %}<!-- Use page.related_posts if specified -->{% endcomment %}
+    {% if page.related_posts %}
+      {% include page__related.html %}
+    {% comment %}<!-- otherwise use site.related_posts if available -->{% endcomment %}
+    {% elsif site.related_posts.size > 0 %}
+      {% include page__related.html posts=site.related_posts %}
+    {% comment %}<!-- fallback to recent posts -->{% endcomment %}
+    {% else %}
+      {% include page__related.html posts=site.posts %}
+    {% endif %}
   {% endif %}
 </div>

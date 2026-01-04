@@ -99,45 +99,11 @@ body {
 		position: relative;
 		
 		.header-link {
-			position: relative;
-			left: 0.5em;
-			opacity: 0;
-			font-size: 0.8em;
-			margin-right: 0.3em;
-			-webkit-transition: opacity 0.2s ease-in-out 0.1s;
-			-moz-transition: opacity 0.2s ease-in-out 0.1s;
-			-o-transition: opacity 0.2s ease-in-out 0.1s;
-			transition: opacity 0.2s ease-in-out 0.1s;
-			
-			.sr-only {
-				position: absolute !important;
-				clip: rect(1px, 1px, 1px, 1px) !important;
-				height: 1px !important;
-				width: 1px !important;
-				border: 0 !important;
-				overflow: hidden !important;
-			}
+			display: none !important;
 		}
 		
 		.header-clipboard-button {
-			position: relative;
-			left: 0.5em;
-			opacity: 0;
-			font-size: 0.8em;
-			background: none;
-			border: none;
-			outline: none;
-			cursor: pointer;
-			color: inherit;
-			-webkit-transition: opacity 0.2s ease-in-out 0.1s;
-			-moz-transition: opacity 0.2s ease-in-out 0.1s;
-			-o-transition: opacity 0.2s ease-in-out 0.1s;
-			transition: opacity 0.2s ease-in-out 0.1s;
-		}
-
-		&:hover .header-link,
-		&:hover .header-clipboard-button {
-			opacity: 1;
+			display: none !important;
 		}
 	}
 

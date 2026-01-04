@@ -1,4 +1,24 @@
-{% assign posts = include.posts | where_exp: "post", "post.hidden != true" %}
+{% comment %}<!-- Use page.related_posts if specified, otherwise use include.posts -->{% endcomment %}
+{% if page.related_posts %}
+  {% assign related_posts_array = "" | split: "" %}
+  {% for related_post_filename in page.related_posts %}
+    {% comment %}<!-- Find post by filename -->{% endcomment %}
+    {% assign post_filename = related_post_filename | split: "/" | last %}
+    {% for post in site.posts %}
+      {% assign post_path_parts = post.path | split: "/" %}
+      {% assign post_filename_check = post_path_parts | last %}
+      {% if post_filename_check == post_filename %}
+        {% assign related_posts_array = related_posts_array | push: post %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  {% assign posts = related_posts_array | where_exp: "post", "post.hidden != true" %}
+{% else %}
+  {% assign posts = include.posts | where_exp: "post", "post.hidden != true" %}
+{% endif %}
+
+{% if posts.size > 0 %}
 <div class="page__related">
   {% include before-related.html %}
   <h2 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h2>
@@ -9,3 +29,4 @@
     {% endfor %}
   </div>
 </div>
+{% endif %}

@@ -17,6 +17,8 @@ excerpt: "Apache Airflow를 AI 에이전트와 통합하여 DAG 관리, 모니�
 toc: true
 toc_sticky: true
 toc_label: "목차"
+related_posts:
+  - 2024-07-15-what-is-airflow.md
 ---
 
 ## 들어가며

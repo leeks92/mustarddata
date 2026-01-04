@@ -16,6 +16,8 @@ excerpt: "Apache Airflow는 배치 워크플로우를 개발, 스케줄링, 모�
 toc: true
 toc_sticky: true
 toc_label: "목차"
+related_posts:
+  - 2026-01-04-airflow-mcp-guide.md
 ---
 
 ## 들어가며

@@ -17,6 +17,9 @@ excerpt: "Cursor AI의 병렬 에이전트 기능을 완벽하게 이해하고 �
 toc: true
 toc_sticky: true
 toc_label: "목차"
+related_posts:
+  - 2026-01-03-cursor-ai-browser-guide.md
+  - 2026-01-03-cursor-ai-rules-guide.md
 ---
 
 ## 들어가며

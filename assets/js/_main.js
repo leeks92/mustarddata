@@ -125,63 +125,10 @@ $(document).ready(function () {
     midClick: true, // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
   });
 
-  // Add anchors for headings
-  var pageContent = document.querySelector(".page__content");
-  if (pageContent) {
-    pageContent
-      .querySelectorAll("h1, h2, h3, h4, h5, h6")
-      .forEach(function (element) {
-        var id = element.getAttribute("id");
-        if (id) {
-          // Permalink (hidden)
-          var anchor = document.createElement("a");
-          anchor.className = "header-link";
-          anchor.href = "#" + id;
-          anchor.innerHTML =
-            '<span class="sr-only">Permalink</span><i class="fas fa-link"></i>';
-          anchor.title = "Permalink";
-          element.appendChild(anchor);
-          
-          // Clipboard button
-          var clipboardButton = document.createElement("button");
-          clipboardButton.className = "header-clipboard-button";
-          clipboardButton.title = "Copy heading link to clipboard";
-          clipboardButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
-          clipboardButton.addEventListener("click", function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var url = window.location.origin + window.location.pathname + "#" + id;
-            if (navigator.clipboard) {
-              navigator.clipboard.writeText(url).then(function() {
-                clipboardButton.innerHTML = '<span class="sr-only">Copied!</span><i class="fas fa-check"></i>';
-                setTimeout(function() {
-                  clipboardButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
-                }, 1500);
-              });
-            } else {
-              // Fallback for older browsers
-              var textarea = document.createElement("textarea");
-              textarea.value = url;
-              textarea.style.position = "fixed";
-              textarea.style.opacity = "0";
-              document.body.appendChild(textarea);
-              textarea.select();
-              try {
-                document.execCommand("copy");
-                clipboardButton.innerHTML = '<span class="sr-only">Copied!</span><i class="fas fa-check"></i>';
-                setTimeout(function() {
-                  clipboardButton.innerHTML = '<span class="sr-only">Copy link</span><i class="far fa-copy"></i>';
-                }, 1500);
-              } catch (err) {
-                console.error("Failed to copy:", err);
-              }
-              document.body.removeChild(textarea);
-            }
-          });
-          element.appendChild(clipboardButton);
-        }
-      });
-  }
+  // Remove any existing header-link and header-clipboard-button elements
+  document.querySelectorAll('.header-link, .header-clipboard-button').forEach(function(element) {
+    element.remove();
+  });
 
   // Permalink copy functionality for archive pages
   document.querySelectorAll('a[rel="permalink"]').forEach(function(link) {
