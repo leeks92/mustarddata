@@ -406,15 +406,17 @@ body {
     height: auto !important;
   }
 
-  // 프로필 이미지가 있는 경우 예외 처리
-  > .h-card {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    min-height: auto !important;
-    height: auto !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+  // 프로필 이미지가 있는 경우 예외 처리 (데스크탑 전용)
+  @include breakpoint($large) {
+    > .h-card {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      min-height: auto !important;
+      height: auto !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
   }
 
   // 모든 자식 요소의 상단 여백 제거 (h-card 제외)
@@ -628,16 +630,15 @@ body {
   }
 }
 
-// 프로필 이미지도 사이드바와 함께 스크롤되도록 설정
-.sidebar.sticky .h-card,
-.sidebar.sticky > .h-card:first-child {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  min-height: auto !important;
-  height: auto !important;
-  
-  @include breakpoint($large) {
+// 프로필 이미지도 사이드바와 함께 스크롤되도록 설정 (데스크탑 전용)
+@include breakpoint($large) {
+  .sidebar.sticky .h-card,
+  .sidebar.sticky > .h-card:first-child {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: auto !important;
+    height: auto !important;
     // 프로필도 사이드바와 함께 스크롤되도록 sticky 제거
     position: relative !important;
     // 배경색 제거 (다크모드에서 배경색이 생기지 않도록)
@@ -1261,6 +1262,137 @@ body.dark-mode {
   .active a {
     background-color: #6f777d !important;
     color: #fff !important;
+  }
+}
+
+// 모바일에서 TOC 접기/펼치기 기능
+@include breakpoint(max-width $large) {
+  // TOC 컨테이너 상단 여백 제거
+  .sidebar__right {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .toc {
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    // nav 요소 상단 여백 제거
+    nav.toc {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    
+    // header 요소 상단 여백 제거
+    header {
+      margin: 0 !important;
+      padding: 0 !important;
+      
+      h4 {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+    }
+    
+    // 체크박스 숨김 및 공간 제거
+    .toc__toggle {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      height: 0 !important;
+      width: 0 !important;
+      position: absolute !important;
+      opacity: 0 !important;
+    }
+    
+    // TOC 헤더를 클릭 가능하게 만들기
+    .nav__title {
+      cursor: pointer !important;
+      user-select: none !important;
+      position: relative !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0.75em 1em !important;
+      
+      // 화살표 아이콘 추가
+      &::after {
+        content: "▼" !important;
+        float: right !important;
+        transition: transform 0.3s ease !important;
+        font-size: 0.8em !important;
+        margin-left: 0.5em !important;
+      }
+    }
+    
+    // TOC 메뉴 기본적으로 숨김 (접힌 상태)
+    .toc__menu {
+      max-height: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease !important;
+    }
+    
+    // 체크박스가 체크되었을 때 (펼친 상태)
+    .toc__toggle:checked ~ .nav__title::after {
+      transform: rotate(180deg) !important;
+    }
+    
+    .toc__toggle:checked ~ .toc__menu {
+      max-height: 1000px !important;
+      opacity: 1 !important;
+      margin: 0.5em 0 !important;
+      padding: 0.5em 0 !important;
+    }
+  }
+}
+
+// 모바일에서 프로필과 메뉴를 세로로 배치 (겹침 방지 및 UI 개선)
+@include breakpoint(max-width $large) {
+  .sidebar {
+    display: flex !important;
+    flex-direction: column !important; // 세로 배치로 변경
+    align-items: stretch !important;
+    gap: 1.5em !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    
+    // sidebar의 모든 자식 요소에 대한 기본 스타일 오버라이드
+    > * {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      width: 100% !important;
+    }
+    
+    .h-card {
+      display: none !important; // 모바일에서 h-card 영역 숨김
+    }
+    
+    .nav__list {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+  }
+  
+  // 모바일에서 h-card 영역 숨김 - 더 구체적인 선택자로 우선순위 높임
+  .sidebar .h-card,
+  .sidebar > .h-card,
+  .sidebar.sticky .h-card,
+  .sidebar.sticky > .h-card,
+  .h-card,
+  div.h-card {
+    display: none !important; // 모바일에서 h-card 영역 숨김
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
 }
 
