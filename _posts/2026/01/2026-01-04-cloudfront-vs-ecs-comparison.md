@@ -2,7 +2,7 @@
 layout: single
 title: "[AWS] CloudFront vs ECS 웹 배포 전략 비교"
 date: 2026-01-04
-last_modified_at: 2026-01-04T23:34:06+09:00
+last_modified_at: 2026-01-06T15:45:00+09:00
 categories:
   - cloud
 tags:
@@ -21,6 +21,7 @@ toc_label: "목차"
 related_posts:
   - 2026-01-04-cloudfront-guide.md
   - 2026-01-04-ecs-fargate-guide.md
+  - 2026-01-06-ecs-deployment-strategies.md
 ---
 
 ## 들어가며

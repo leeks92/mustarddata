@@ -1253,6 +1253,16 @@ body.dark-mode {
 
 // TOC (On This Page) 색상 변경 - 빨간색 제거
 .toc {
+  // 체크박스 숨김 및 상단 공백 제거
+  .toc__toggle {
+    display: none !important;
+  }
+
+  header h4 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
   .nav__title {
     background: #6f777d !important; // 회색 계열로 변경 (원래 primary-color 대신)
     color: #fff !important;

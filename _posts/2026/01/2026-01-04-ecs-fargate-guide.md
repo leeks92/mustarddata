@@ -2,7 +2,7 @@
 layout: single
 title: "[AWS] ECS Fargate 구성 파헤쳐보기"
 date: 2026-01-04
-last_modified_at: 2026-01-04T23:23:52+09:00
+last_modified_at: 2026-01-06T15:40:00+09:00
 categories:
   - cloud
 tags:
@@ -19,6 +19,7 @@ toc_sticky: true
 toc_label: "목차"
 related_posts:
   - 2026-01-04-cloudfront-vs-ecs-comparison.md
+  - 2026-01-06-ecs-deployment-strategies.md
 ---
 
 ## 들어가며
